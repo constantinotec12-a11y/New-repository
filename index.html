@@ -77,7 +77,7 @@ svg{display:block}
 .blink{animation:blink 1s steps(2) infinite}
 @keyframes blink{50%{opacity:.25}}
 .tip{display:none!important}
-nav.bn{position:fixed;left:0;right:0;bottom:0;z-index:6;background:#0f151d;border-top:1px solid var(--line2);display:grid;grid-template-columns:repeat(4,1fr);padding-bottom:var(--sb)}
+nav.bn{position:fixed;left:0;right:0;bottom:0;z-index:6;background:#0f151d;border-top:1px solid var(--line2);display:grid;grid-template-columns:repeat(5,1fr);padding-bottom:var(--sb)}
 nav.bn button{background:none;border:0;color:var(--mu);padding:8px 0 9px;font-size:11px;font-weight:600;display:flex;flex-direction:column;align-items:center;gap:3px;position:relative}
 nav.bn button.on{color:var(--yel)}
 nav.bn svg{width:22px;height:22px}
@@ -103,6 +103,26 @@ nav.bn svg{width:22px;height:22px}
 .ev div{padding:8px 12px;border-bottom:1px solid var(--line);font-size:13px}
 .ev .tm{color:var(--mu);font-family:"JetBrains Mono";font-size:11px;display:block}
 .inst{font-size:13px;color:var(--mu);line-height:1.5}
+.p-fal{background:#4a0d1c;color:#ff8fa8}
+.kd-win{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:4px 0 12px}
+.kd-mu{color:var(--mu);font-size:12px;font-weight:400}
+.kd-g{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px}
+.kd-c{background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+.kd-l{font-size:11px;color:var(--mu);text-transform:uppercase;letter-spacing:.8px}
+.kd-v{font-family:"JetBrains Mono",monospace;font-size:24px;font-weight:600;margin:2px 0}
+.kd-s{font-size:11.5px;color:var(--mu);line-height:1.3}
+.kd-m{font-size:11px;color:var(--dim);margin-top:4px}
+.kd-h{font-family:"Barlow Condensed";font-size:14px;letter-spacing:1.4px;text-transform:uppercase;color:var(--mu);margin:16px 0 8px}
+.kd-cg{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:10px}
+.kd-ch{background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:8px 10px}
+.kd-ct{font-size:12.5px;font-weight:600;margin-bottom:2px}
+.kd-tw{overflow-x:auto}
+.kd-t{width:100%;border-collapse:collapse;font-size:12.5px;min-width:520px}
+.kd-t th{text-align:left;color:var(--mu);font-size:11px;text-transform:uppercase;letter-spacing:.6px;padding:6px 8px;border-bottom:1px solid var(--line2)}
+.kd-t td{padding:6px 8px;border-bottom:1px solid var(--line);cursor:pointer}
+.kd-f{display:grid;gap:6px;font-size:12.5px;color:var(--mu);line-height:1.45}
+.kd-f b{color:var(--tx)}
+
 .seg{display:inline-flex;border:1px solid var(--line2);border-radius:8px;overflow:hidden}
 .seg button{background:none;border:0;color:var(--mu);padding:7px 14px;font-size:13px;font-weight:600}
 .seg button.on{background:#233246;color:var(--tx)}
@@ -157,7 +177,7 @@ textarea.obs{width:100%;min-height:70px;background:var(--panel2);border:1px soli
     <h2>Programadas para hoje</h2>
     <div class="card" id="hoje"></div>
     <h2>Instalar no celular</h2>
-    <div class="card inst" style="padding:12px"><span id="instx">Android (Chrome): toque em <b>Instalar app</b> ou menu ⋮ → <b>Instalar app</b>.<br>iPhone (Safari): Compartilhar → <b>Adicionar à Tela de Início</b>.</span><div id="instb" style="display:none;margin-top:8px"><button class="btn y" id="instbtn">Instalar app neste celular</button></div></div>
+    <div class="card inst" style="padding:12px"><span id="instx">Android (Chrome): toque em <b>Instalar app</b> ou menu ⋮ → <b>Instalar app</b>.<br>iPhone (Safari): Compartilhar → <b>Adicionar à Tela de Início</b>.</span><div id="instb" style="display:none;margin-top:8px"><button class="btn y" id="instbtn">Instalar app neste celular</button></div><div style="margin-top:8px">Versão para computador: <a href="supervisorio.html" style="color:var(--yel)">abrir supervisório</a></div></div>
   </section>
 
   <section class="view" id="v-sin">
@@ -167,7 +187,7 @@ textarea.obs{width:100%;min-height:70px;background:var(--panel2);border:1px soli
     <div class="syntools"><button class="ib" id="zo">−</button><button class="ib" id="zi">+</button><button class="ib" id="zf">Ajustar</button><span class="grow"></span><span class="meta">Toque num equipamento</span></div>
     <div class="synbox" id="synbox"><div id="synwrap"></div></div>
     <div class="stleg" style="margin-top:8px">
-      <span><i style="background:var(--ok)"></i>Em dia</span><span><i style="background:var(--sem)"></i>OS na semana</span><span><i style="background:var(--hoje)"></i>OS hoje</span><span><i style="background:var(--exe)"></i>Em execução</span><span><i style="background:var(--atr)"></i>Atrasada</span><span><i style="background:var(--lub);border-radius:50%"></i>Lubrificação pendente</span>
+      <span><i style="background:var(--ok)"></i>Em dia</span><span><i style="background:var(--sem)"></i>OS na semana</span><span><i style="background:var(--hoje)"></i>OS hoje</span><span><i style="background:var(--exe)"></i>Em execução</span><span><i style="background:var(--atr)"></i>Atrasada</span><span><i style="background:#ff2d55"></i>Em falha</span><span><i style="background:var(--lub);border-radius:50%"></i>Lubrificação pendente</span>
     </div>
     </div>
   </section>
@@ -180,8 +200,10 @@ textarea.obs{width:100%;min-height:70px;background:var(--panel2);border:1px soli
     <div class="card" id="oslist"></div>
   </section>
 
+  <section class="view" id="v-kpi"><div id="kpi"></div></section>
+
   <section class="view" id="v-al">
-    <h2>Alarmes ativos – OS atrasadas</h2>
+    <h2>Alarmes ativos – falhas e OS atrasadas</h2>
     <div class="card" id="alarms"></div>
   </section>
 </main>
@@ -190,6 +212,7 @@ textarea.obs{width:100%;min-height:70px;background:var(--panel2);border:1px soli
   <button data-v="painel" class="on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg>Painel</button>
   <button data-v="sin"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 18h6l3-8h4l2 4h3"/><rect x="2" y="15" width="4" height="6"/><rect x="18" y="11" width="4" height="10"/></svg>Equipamentos</button>
   <button data-v="os"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8h6M9 12h6M9 16h4"/></svg>OS</button>
+  <button data-v="kpi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20V10M10 20V4M16 20v-8M22 20H2"/></svg>KPIs</button>
   <button data-v="al"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l9 16H3z"/><path d="M12 10v4M12 17v.5"/></svg>Alarmes<span class="badge" id="bdg" style="display:none">0</span></button>
 </nav>
 <div class="bk" id="bk"></div>
@@ -216,22 +239,53 @@ const DIAS=['Seg','Ter','Qua','Qui','Sex','Sáb','Dom'];
 
 /* ---------- state ---------- */
 let sim=Date.now(), speed=3600, running=true, sel=null, filter='all', tab='prog';
-let OS=[], seq=1, lastK=null, EV=[], ver=0;
+let OS=[], OPEN=[], seq=1, lastK=null, EV=[], ver=0;
+let FAIL=[], FAILED={}, STOPS={}, SNAP={}, KWIN=30;
 let rng=1234567; const rnd=()=>{rng=(rng*1103515245+12345)%2147483648;return rng/2147483648;};
 const fmt=t=>new Date(t).toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
 const fmtS=t=>new Date(t).toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'});
 function ev(t,txt,kind){EV.unshift({t,txt,kind});if(EV.length>300)EV.pop();}
+TIPO.C='Corretiva';
 
+/* modelo de falhas (simulação) – MTBF e MTTR "reais" por tipo de equipamento, em horas */
+const MTBFT_BASE={tombador:500,redler:700,elevador:800,correia:600,tripper:900,comporta:1500,balancafluxo:1200,valvula:1500,filtro:900,ventilador:1500,compressor:1200,gerador:2500,balanca:2500,amostrador:1000,moega:3000,subestacao:6000,ccm:3000,motores:2000,clp:5000,seguranca:3000,torre:6000,termometria:4000,vaso:9000,talha:4000};
+const MTBFT={}; for(const c in MTBFT_BASE) MTBFT[c]=MTBFT_BASE[c]*1.8;
+const MTTRT={tombador:4,redler:4,elevador:5,correia:3,tripper:3,comporta:2,balancafluxo:3,valvula:2,filtro:3,ventilador:2.5,compressor:3,gerador:4,balanca:3,amostrador:2,moega:4,subestacao:6,ccm:3,motores:4,clp:3,seguranca:1.5,torre:5,termometria:2,vaso:4,talha:2};
+const MON=Object.keys(EQ).filter(t=>MTBFT[EQ[t].cls]);
+const CAPHH=280; /* capacidade da equipe em HH/semana (manutenção 240 + lubrificação 40) */
+const LINES={'Recepção':['TB-01','MG-01','RD-01','TC-01','EL-01','BR-01'],'Expedição':['TC-08','BF-01','TC-09','T-01','CT-10','T-02','CT-11','T-03','CT-12','T-04','CT-13']};
+const META={A:0.97,R24:0.95,mtbf:500,mttr:4,bl:2,oee:0.75};
+
+function addOS(o){OS.push(o);OPEN.push(o);}
 function gen(k){
   const w=planWeek(k), ws=wkStart(k); let n=0,nl=0;
   TASKS.forEach(t=>{ if(!due(t,w)) return;
     const day=(t.i*7+w*3)%5, h=7+((t.i*5)%8);
     const dur=Math.max(.25,Math.min(t.hh>8?t.hh/3:t.hh,24));
     const sch=ws+day*DAY+h*HOUR, dl=ws+(t.hh>8?4:day)*DAY+17*HOUR;
-    OS.push({id:'OS-'+String(26000+seq++).padStart(6,'0'),t,k,w,day,sch,dl,dur,st:'prog',skip:rnd()<0.07,start:null,end:null});
+    addOS({id:'OS-'+String(26000+seq++).padStart(6,'0'),t,k,w,day,sch,dl,dur,st:'prog',skip:rnd()<0.07,start:null,end:null});
     t.plan==='L'?nl++:n++;
   });
+  SNAP[k]={bl:OPEN.filter(o=>o.st!=='con').reduce((a,o)=>a+o.t.hh,0)/CAPHH};
   ev(ws,`Plano gerou automaticamente ${n} OS de manutenção e ${nl} OS de lubrificação – semana ${w}/52`,'gen');
+}
+function addStop(tag,a,b,kind){ if(a!=null&&b>a) (STOPS[tag]=STOPS[tag]||[]).push({a,b,kind}); }
+function fail(tag,now){
+  const q=EQ[tag], base=MTTRT[q.cls]||3, ttr=base*(0.45+rnd()*1.3), wait=rnd()*0.8;
+  const ref=(BYTAG[tag]||[]).find(t=>t.plan==='M');
+  const t={i:-1,plan:'M',tag,comp:'Falha / quebra',ativ:'Corretiva emergencial – falha em '+q.desc,sym:'C',esp:['ccm','subestacao','motores','clp','seguranca'].includes(q.cls)?'Elétrica':'Mecânica',fq:'-',iv:0,st:0,hh:+(ttr*2).toFixed(1),cond:'Parado',lub:'',ck:ref?ref.ck:'-'};
+  const k=wkIdx(now), d=new Date(now);
+  const o={id:'OS-'+String(26000+seq++).padStart(6,'0'),t,k,w:planWeek(k),day:Math.min((d.getDay()+6)%7,4),sch:now,dl:now+(ttr+wait)*HOUR,dur:ttr,st:'exe',skip:false,start:now+wait*HOUR,end:now+(ttr+wait)*HOUR,fail:true};
+  addOS(o); const r={tag,tf:now,te:null,os:o.id}; FAIL.push(r); FAILED[tag]=r;
+  ev(now,`FALHA – ${tag} parado · ${o.id} corretiva emergencial aberta`,'fal'); ver++;
+}
+function concludeOS(o,now,how){
+  if(o.st==='con') return;
+  o.st='con'; o.fin=now; ver++;
+  if(o.fail){ const r=FAILED[o.t.tag]; if(r){ r.te=now; addStop(o.t.tag,r.tf,now,'F'); delete FAILED[o.t.tag]; }
+    ev(now,`${o.id} reparo concluído${how?' '+how:''} – ${o.t.tag} liberado (TTR ${((now-o.sch)/HOUR).toFixed(1)} h)`,'con'); }
+  else { if(o.t.cond==='Parado'&&o.start) addStop(o.t.tag,o.start,now,'P');
+    ev(now,`${o.id} concluída${how?' '+how:''} – ${o.t.tag} · ${o.t.ativ.slice(0,60)} (checklist ${o.t.ck})`,'con'); }
 }
 const CAP={M:5,L:2};
 function step(now){
@@ -240,16 +294,17 @@ function step(now){
   while(lastK<k){ lastK++; gen(lastK); }
   const d=new Date(now), wd=(d.getDay()+6)%7, hr=d.getHours();
   const work=wd<5 && hr>=7 && hr<17;
-  // finish
-  for(const o of OS){ if(o.st==='exe' && now>=o.end){ o.st='con'; o.fin=now; ev(now,`${o.id} concluída – ${o.t.tag} · ${o.t.ativ.slice(0,60)} (checklist ${o.t.ck})`,'con'); ver++; } }
-  // overdue
-  for(const o of OS){ if(o.st==='prog' && now>o.dl){ o.st='atr'; ev(o.dl,`${o.id} ATRASADA – ${o.t.tag} · ${o.t.ativ.slice(0,60)}`,'atr'); ver++; } }
-  if(wd===0 && hr===7){ OS.forEach(o=>{ if(o.st==='atr' && o.skip && now-o.dl>DAY){ o.skip=false; } }); }
+  for(const o of OPEN){ if(o.st==='exe' && now>=o.end) concludeOS(o,now); }
+  for(const o of OPEN){ if(o.st==='prog' && now>o.dl){ o.st='atr'; ev(o.dl,`${o.id} ATRASADA – ${o.t.tag} · ${o.t.ativ.slice(0,60)}`,'atr'); ver++; } }
+  const late=new Set(OPEN.filter(o=>o.st==='atr').map(o=>o.t.tag)), dtH=5/60;
+  for(const tag of MON){ if(FAILED[tag]) continue; if(rnd()<dtH/MTBFT[EQ[tag].cls]*(late.has(tag)?2.2:1)) fail(tag,now); }
+  if(wd===0 && hr===7){ OPEN.forEach(o=>{ if(o.st==='atr' && o.skip && now-o.dl>DAY){ o.skip=false; } }); }
+  OPEN=OPEN.filter(o=>o.st!=='con');
   if(!work) return;
   for(const p of ['M','L']){
-    let busy=OS.filter(o=>o.st==='exe'&&o.t.plan===p).length;
+    let busy=OPEN.filter(o=>o.st==='exe'&&o.t.plan===p&&!o.fail).length;
     if(busy>=CAP[p]) continue;
-    const cand=OS.filter(o=>o.t.plan===p && !o.skip && (o.st==='atr'||(o.st==='prog'&&o.sch<=now))).sort((a,b)=>(a.st==='atr'?0:1)-(b.st==='atr'?0:1)||a.sch-b.sch);
+    const cand=OPEN.filter(o=>o.t.plan===p && !o.fail && !o.skip && (o.st==='atr'||(o.st==='prog'&&o.sch<=now))).sort((a,b)=>(a.st==='atr'?0:1)-(b.st==='atr'?0:1)||a.sch-b.sch);
     for(const o of cand){ if(busy>=CAP[p]) break; o.st='exe'; o.start=now; o.end=now+o.dur*HOUR; busy++; ver++;
       ev(now,`${o.id} iniciada – ${o.t.tag} · ${o.t.ativ.slice(0,60)}`,'ini'); }
   }
@@ -259,20 +314,92 @@ function advance(to){ const STEP=5*MIN; while(sim<to){ sim=Math.min(to,sim+STEP)
 /* ---------- status ---------- */
 function curK(){return wkIdx(sim);}
 function tagStatus(tag){
-  const os=OS.filter(o=>o.t.tag===tag && o.st!=='con');
   const r={code:'ok',lub:false,stop:false};
+  const os=OPEN.filter(o=>o.t.tag===tag && o.st!=='con');
+  r.lub=os.some(o=>o.t.plan==='L');
+  if(FAILED[tag]){ r.code='fal'; r.stop=true; return r; }
   if(!os.length) return r;
   const today=new Date(sim); today.setHours(0,0,0,0); const t0=today.getTime();
   if(os.some(o=>o.st==='exe')){ r.code='exe'; r.stop=os.some(o=>o.st==='exe'&&o.t.cond==='Parado'); }
   else if(os.some(o=>o.st==='atr')) r.code='atr';
   else if(os.some(o=>o.sch>=t0&&o.sch<t0+DAY)) r.code='hoje';
   else if(os.some(o=>o.k===curK())) r.code='sem';
-  r.lub=os.some(o=>o.t.plan==='L');
   return r;
 }
-const COL={ok:'var(--ok)',sem:'var(--sem)',hoje:'var(--hoje)',exe:'var(--exe)',atr:'var(--atr)'};
-const STXT={ok:'Em dia',sem:'OS programada na semana',hoje:'OS programada hoje',exe:'Em execução',atr:'OS atrasada'};
+const COL={ok:'var(--ok)',sem:'var(--sem)',hoje:'var(--hoje)',exe:'var(--exe)',atr:'var(--atr)',fal:'#ff2d55'};
+const STXT={ok:'Em dia',sem:'OS programada na semana',hoje:'OS programada hoje',exe:'Em execução',atr:'OS atrasada',fal:'EM FALHA – parado'};
 const OSTXT={prog:['Programada','p-sem'],exe:['Em execução','p-exe'],atr:['Atrasada','p-atr'],con:['Concluída','p-con']};
+
+/* ---------- indicadores ---------- */
+const ovl=(a,b,t0,t1)=>Math.max(0,Math.min(b,t1)-Math.max(a,t0));
+function ivs(tag,now){ const L=(STOPS[tag]||[]).slice(); if(FAILED[tag]) L.push({a:FAILED[tag].tf,b:now,kind:'F'});
+  for(const o of OPEN) if(o.t.tag===tag&&o.st==='exe'&&!o.fail&&o.t.cond==='Parado'&&o.start<now) L.push({a:o.start,b:now,kind:'P'}); return L; }
+function union(L){ L=L.map(i=>({a:i.a,b:i.b})).sort((x,y)=>x.a-y.a); const out=[]; for(const i of L){ const l=out[out.length-1]; if(l&&i.a<=l.b) l.b=Math.max(l.b,i.b); else out.push(i);} return out; }
+function perfQ(ln,t0,t1){ let sP=0,sQ=0,n=0; for(let k=wkIdx(t0);k<=wkIdx(t1-1);k++){ const h=mod(Math.sin(k*12.9898+ln.length*7.13)*43758.5453,1); sP+=0.84+0.10*h; sQ+=0.992+0.007*mod(h*7.7,1); n++; } return {P:sP/n,Q:sQ/n}; }
+function kpi(t0,t1){
+  const now=Math.min(t1,sim), H=(now-t0)/HOUR; if(H<=0) return null;
+  let down=0,downF=0,fails=0,rep=0; const per={};
+  for(const tag of MON){ const L=ivs(tag,now), dn=union(L).reduce((a,i)=>a+ovl(i.a,i.b,t0,now),0)/HOUR;
+    const dF=union(L.filter(i=>i.kind==='F')).reduce((a,i)=>a+ovl(i.a,i.b,t0,now),0)/HOUR;
+    const fs=FAIL.filter(f=>f.tag===tag&&f.tf>=t0&&f.tf<now), rp=fs.reduce((a,f)=>a+((f.te||now)-f.tf),0)/HOUR;
+    per[tag]={dn,dF,dP:Math.max(0,dn-dF),n:fs.length,rp,up:H-dn}; down+=dn; downF+=dF; fails+=fs.length; rep+=rp; }
+  const cal=H*MON.length, up=cal-down, mtbf=fails?up/fails:null, mttr=fails?rep/fails:null;
+  const oee={}; for(const ln in LINES){ const u=union(LINES[ln].flatMap(t=>ivs(t,now))); const dn=u.reduce((a,i)=>a+ovl(i.a,i.b,t0,now),0)/HOUR; const pq=perfQ(ln,t0,now); const A=1-dn/H; oee[ln]={A,P:pq.P,Q:pq.Q,O:A*pq.P*pq.Q}; }
+  return {H,A:1-down/cal,mtbf,mttr,R24:mtbf?Math.exp(-24/mtbf):null,R168:mtbf?Math.exp(-168/mtbf):null,fails,down,downF,per,oee};
+}
+function backlogNow(){ const hh=OPEN.filter(o=>o.st!=='con').reduce((a,o)=>a+(o.st==='exe'?Math.max(0,Math.min(1,(o.end-sim)/HOUR/o.dur))*o.t.hh:o.t.hh),0); return {hh,sem:hh/CAPHH}; }
+function trend(n){ const k=curK(), out=[]; for(let i=n-1;i>=0;i--){ const kk=k-i, t0=wkStart(kk), t1=Math.min(wkStart(kk+1),sim);
+    const r=kpi(t0,t1), r4=kpi(wkStart(kk-3),t1); out.push({w:planWeek(kk),A:r.A,mtbf:r4.mtbf,mttr:r4.mttr,bl:(SNAP[kk]||{}).bl,oeeE:r.oee['Expedição'].O,oeeR:r.oee['Recepção'].O}); } return out; }
+const pct=v=>v==null?'—':(v*100).toFixed(1)+'%', hrs=v=>v==null?'—':(v>=100?v.toFixed(0):v.toFixed(1))+' h';
+function spark(title,series,fmtv,meta,better){
+  const W=320,H=120,pl=8,pr=46,pt=26,pb=20, all=series.flatMap(s=>s.v).filter(v=>v!=null).concat(meta!=null?[meta]:[]);
+  if(!all.length) return `<div class="kd-ch"><div class="kd-ct">${title}</div><div class="kd-mu">Sem dados no período</div></div>`;
+  let lo=Math.min(...all), hi=Math.max(...all); if(hi-lo<1e-9){hi+=1;lo-=1;} const pad=(hi-lo)*0.12; lo-=pad; hi+=pad;
+  const n=series[0].v.length, X=i=>pl+(W-pl-pr)*(n<2?0.5:i/(n-1)), Y=v=>pt+(H-pt-pb)*(1-(v-lo)/(hi-lo));
+  let g=`<svg viewBox="0 0 ${W} ${H}" width="100%" role="img" aria-label="${title}">`;
+  if(meta!=null) g+=`<line x1="${pl}" x2="${W-pr}" y1="${Y(meta)}" y2="${Y(meta)}" stroke="var(--mu)" stroke-dasharray="4 4" stroke-width="1"/><text x="${pl+2}" y="${Y(meta)-4}" font-size="10" fill="var(--mu)">meta</text>`;
+  series.forEach((s,si)=>{ let d='',on=false; s.v.forEach((v,i)=>{ if(v==null){on=false;return;} d+=(on?'L':'M')+X(i).toFixed(1)+' '+Y(v).toFixed(1)+' '; on=true; });
+    g+=`<path d="${d}" fill="none" stroke="${s.c}" stroke-width="2"/>`;
+    s.v.forEach((v,i)=>{ if(v!=null) g+=`<circle cx="${X(i)}" cy="${Y(v)}" r="${i===n-1?3.5:2}" fill="${s.c}"/>`; });
+    const li=s.v.map((v,i)=>v==null?-1:i).filter(i=>i>=0).pop(); if(li!=null&&li>=0) g+=`<text x="${X(li)+6}" y="${Y(s.v[li])+4+si*12}" font-size="11" font-weight="600" fill="${s.c}">${fmtv(s.v[li])}</text>`; });
+  const wl=series[0].w; g+=`<text x="${pl}" y="${H-5}" font-size="10" fill="var(--mu)">sem ${wl[0]}</text><text x="${W-pr}" y="${H-5}" font-size="10" fill="var(--mu)" text-anchor="end">sem ${wl[n-1]}</text></svg>`;
+  return `<div class="kd-ch"><div class="kd-ct">${title}${series.length>1?' <span class="kd-mu">'+series.map(s=>`<b style="color:${s.c}">●</b> ${s.n}`).join(' ')+'</span>':''}</div>${g}</div>`;
+}
+function kpiHTML(){
+  const t1=sim, t0=sim-KWIN*DAY, r=kpi(t0,t1), bl=backlogNow(), tr=trend(12), cc=(ok)=>ok==null?'var(--mu)':ok?'var(--ok)':'var(--atr)';
+  const card=(l,v,meta,ok,sub)=>`<div class="kd-c"><div class="kd-l">${l}</div><div class="kd-v" style="color:${cc(ok)}">${v}</div><div class="kd-s">${sub}</div><div class="kd-m">Meta: ${meta}</div></div>`;
+  const oe=r.oee, wk=tr.map(x=>x.w);
+  const top=Object.entries(r.per).sort((a,b)=>b[1].dn-a[1].dn).slice(0,10);
+  return `<div class="kd-win">Período: ${[7,30,90].map(d=>`<button class="chip ${KWIN===d?'on':''}" data-win="${d}">${d} dias</button>`).join('')}<span class="kd-mu">${MON.length} equipamentos monitorados · ${r.fails} falhas no período</span></div>
+  <div class="kd-g">
+   ${card('Disponibilidade',pct(r.A),'≥ 97%',r.A>=META.A,`${r.down.toFixed(0)} h paradas (${r.downF.toFixed(0)} h por falha)`)}
+   ${card('Confiabilidade R(24 h)',pct(r.R24),'≥ 95%',r.R24==null?null:r.R24>=META.R24,`R(1 semana) = ${pct(r.R168)}`)}
+   ${card('MTBF',hrs(r.mtbf),'≥ 500 h',r.mtbf==null?null:r.mtbf>=META.mtbf,'tempo médio entre falhas')}
+   ${card('MTTR',hrs(r.mttr),'≤ 4 h',r.mttr==null?null:r.mttr<=META.mttr,'tempo médio para reparo')}
+   ${card('Backlog',bl.sem.toFixed(1)+' sem',' ≤ 2 semanas',bl.sem<=META.bl,`${bl.hh.toFixed(0)} HH pendentes ÷ ${CAPHH} HH/sem`)}
+   ${card('OEE Recepção',pct(oe['Recepção'].O),'≥ 75%',oe['Recepção'].O>=META.oee,`D ${pct(oe['Recepção'].A)} × P ${pct(oe['Recepção'].P)} × Q ${pct(oe['Recepção'].Q)}`)}
+   ${card('OEE Expedição',pct(oe['Expedição'].O),'≥ 75%',oe['Expedição'].O>=META.oee,`D ${pct(oe['Expedição'].A)} × P ${pct(oe['Expedição'].P)} × Q ${pct(oe['Expedição'].Q)}`)}
+  </div>
+  <div class="kd-h">Tendência – últimas 12 semanas</div>
+  <div class="kd-cg">
+   ${spark('Disponibilidade semanal',[{n:'Disp.',c:'#2ec27e',v:tr.map(x=>x.A),w:wk}],pct,META.A)}
+   ${spark('MTBF (média móvel 4 sem.)',[{n:'MTBF',c:'#3d8bfd',v:tr.map(x=>x.mtbf),w:wk}],hrs,META.mtbf)}
+   ${spark('MTTR (média móvel 4 sem.)',[{n:'MTTR',c:'#f4a14a',v:tr.map(x=>x.mttr),w:wk}],hrs,META.mttr)}
+   ${spark('Backlog no início da semana',[{n:'Backlog',c:'#e9c46a',v:tr.map(x=>x.bl),w:wk}],v=>v.toFixed(1)+' sem',META.bl)}
+   ${spark('OEE semanal',[{n:'Expedição',c:'#36c5d6',v:tr.map(x=>x.oeeE),w:wk},{n:'Recepção',c:'#b48cff',v:tr.map(x=>x.oeeR),w:wk}],pct,META.oee)}
+  </div>
+  <div class="kd-h">Equipamentos que mais pararam – ${KWIN} dias</div>
+  <div class="kd-tw"><table class="kd-t"><thead><tr><th>TAG</th><th>Falhas</th><th>Parado (h)</th><th>Por falha</th><th>Preventiva</th><th>MTBF</th><th>MTTR</th><th>Disp.</th></tr></thead><tbody>
+  ${top.map(([t,p])=>`<tr data-tag="${t}"><td class="mono" style="color:var(--yel)">${t}</td><td>${p.n}</td><td>${p.dn.toFixed(1)}</td><td>${p.dF.toFixed(1)}</td><td>${p.dP.toFixed(1)}</td><td>${p.n?hrs(p.up/p.n):'—'}</td><td>${p.n?hrs(p.rp/p.n):'—'}</td><td style="color:${(1-p.dn/r.H)>=META.A?'var(--ok)':'var(--atr)'}">${pct(1-p.dn/r.H)}</td></tr>`).join('')}</tbody></table></div>
+  <div class="kd-h">Como cada indicador é calculado</div>
+  <div class="kd-f">
+   <div><b>Disponibilidade</b> = (tempo calendário − tempo parado) ÷ tempo calendário, somando os ${MON.length} equipamentos monitorados. Parado = falha + preventiva com equipamento parado.</div>
+   <div><b>MTBF</b> = tempo em operação ÷ nº de falhas. <b>MTTR</b> = tempo total de reparo ÷ nº de falhas (da falha até a liberação).</div>
+   <div><b>Confiabilidade</b> R(t) = e<sup>−t/MTBF</sup>: probabilidade de operar sem falha por 24 h e por 1 semana.</div>
+   <div><b>Backlog</b> = HH das OS pendentes (programadas, atrasadas e em execução) ÷ capacidade da equipe (${CAPHH} HH/semana).</div>
+   <div><b>OEE</b> = Disponibilidade da linha × Performance × Qualidade. Linha parada quando qualquer equipamento em série para. Performance (t/h real ÷ nominal) e Qualidade (carga sem reclassificação) são simuladas – na operação real vêm da balança de fluxo e da classificação.</div>
+  </div>`;
+}
 
 /* ---------- synoptic ---------- */
 const S=[]; // shapes
@@ -391,7 +518,7 @@ function paintSVG(){
     el.classList.toggle('sel',sel===tag);
     el.classList.toggle('stop',s.stop);
     el.querySelectorAll('.ld').forEach(d=>d.style.display=s.lub?'':'none');
-    el.querySelectorAll('.body').forEach(b=>b.classList.toggle('blink',s.code==='atr'));
+    el.querySelectorAll('.body').forEach(b=>b.classList.toggle('blink',s.code==='atr'||s.code==='fal'));
   }
   // tripper motion
   const ph=(sim/HOUR)%6/6;
@@ -434,7 +561,7 @@ function painel(){
   $('kpis').innerHTML=card('Aderência manut.',am[0]==null?'—':am[0]+'%',`${am[1]}/${am[2]} OS vencidas`,am[0],cc(am[0]))+card('Aderência lubrif.',al[0]==null?'—':al[0]+'%',`${al[1]}/${al[2]} rotas vencidas`,al[0],cc(al[0]))+
     card('OS abertas',open,`${wk.length} geradas na semana`,null,'var(--sem)')+card('Atrasadas',atr,'backlog total',null,atr?'var(--atr)':'var(--ok)')+
     card('HH semana',`${hhE.toFixed(0)}<span style="font-size:13px;color:var(--mu)">/${hhP.toFixed(0)}</span>`,'executado / programado',hhP?hhE/hhP*100:0,'var(--exe)')+card('Disponibilidade',disp.toFixed(1)+'%',`${stopped} parado(s)`,disp,disp>=97?'var(--ok)':'var(--sem)');
-  const cnt={ok:0,sem:0,hoje:0,exe:0,atr:0}; sts.forEach(s=>cnt[s.code]++);
+  const cnt={ok:0,sem:0,hoje:0,exe:0,atr:0,fal:0}; sts.forEach(s=>cnt[s.code]++);
   $('stbar').innerHTML=Object.keys(cnt).map(c=>`<div style="flex:${cnt[c]};background:${COL[c]}"></div>`).join('');
   $('stleg').innerHTML=Object.keys(cnt).map(c=>`<span><i style="background:${COL[c]}"></i>${STXT[c]}: <b style="color:var(--tx)">${cnt[c]}</b></span>`).join('');
   const ex=OS.filter(o=>o.st==='exe'); $('exe').innerHTML=ex.length?ex.map(osItem).join(''):'<div class="empty">Nenhuma OS em execução neste momento.</div>';
@@ -456,9 +583,9 @@ function oslist(){
   box.innerHTML=r.length?r.map(osItem).join(''):'<div class="empty">Nenhuma OS neste filtro.</div>';
 }
 function alarms(){
-  const a=OS.filter(o=>o.st==='atr').sort((x,y)=>x.dl-y.dl);
+  const a=OPEN.filter(o=>o.fail&&o.st!=='con').concat(OPEN.filter(o=>o.st==='atr').sort((x,y)=>x.dl-y.dl));
   $('bdg').style.display=a.length?'':'none';$('bdg').textContent=a.length;
-  $('alarms').innerHTML=a.length?a.map(o=>`<div class="item" data-tag="${o.t.tag}"><span class="tg" style="color:var(--atr)">● ${o.t.tag}</span><div class="tx">${o.t.ativ}<div class="mt">${o.id} · venceu ${fmtS(o.dl)} · ${o.t.plan==='L'?'Lubrificação':'Manutenção'} · ${o.t.ck}</div></div></div>`).join(''):'<div class="empty">Sem alarmes. Todas as OS vencidas foram executadas.</div>';
+  $('alarms').innerHTML=a.length?a.map(o=>`<div class="item" data-tag="${o.t.tag}"><span class="tg" style="color:${o.fail?'#ff2d55':'var(--atr)'}">● ${o.t.tag}</span><div class="tx">${o.fail?'<b style="color:#ff8fa8">FALHA – equipamento parado</b>':o.t.ativ}<div class="mt">${o.id} · ${o.fail?'desde '+fmtS(o.sch):'venceu '+fmtS(o.dl)} · ${o.t.plan==='L'?'Lubrificação':'Manutenção'} · ${o.t.ck}</div></div></div>`).join(''):'<div class="empty">Sem alarmes. Todas as OS vencidas foram executadas.</div>';
 }
 function clock(){const d=new Date(sim);$('clk').textContent=new Date(sim).toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'});$('wk').textContent=`${['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'][d.getDay()]} · sem ${planWeek(curK())}/52`;}
 function setZoom(z){zoom=Math.max(.3,Math.min(2,z));const s=$('syn');if(s){s.style.width=(1400*zoom)+'px';s.style.height=(660*zoom)+'px';}}
@@ -498,12 +625,11 @@ function renderCk(){
     if(!Object.keys(ckAns).length) return err('Responda ao menos um item do checklist.');
     const ncs=Object.entries(ckAns).filter(([i,v])=>v==='NC').map(([i])=>c.items[i]);
     if(ncs.length && !(ckOS.obs||'').trim()) return err('Descreva a não conformidade em Observações.');
-    o.st='con'; o.fin=sim; o.nc=ncs.length;
-    ev(sim,`${o.id} concluída pelo app – ${o.t.tag} · checklist ${o.t.ck} (${Object.keys(ckAns).length} itens, ${ncs.length} NC)`,'con');
+    o.nc=ncs.length; concludeOS(o,sim,`pelo app – ${Object.keys(ckAns).length} itens, ${ncs.length} NC`);
     ncs.forEach(it=>{ const d0=new Date(sim); const wd=(d0.getDay()+6)%7;
       const t={...o.t, plan:'M', sym:'C', ativ:'Corretiva – '+it[2], hh:2, cond:'Parado', esp:o.t.plan==='L'?'Mecânica':o.t.esp};
       const no={id:'OS-'+String(26000+seq++).padStart(6,'0'),t,k:curK(),w:planWeek(curK()),day:Math.min(wd,4),sch:sim,dl:sim+2*DAY,dur:2,st:'prog',skip:false,start:null,end:null};
-      OS.push(no); ev(sim,`${no.id} CORRETIVA gerada pela NC do checklist – ${t.tag}`,'atr'); });
+      addOS(no); ev(sim,`${no.id} CORRETIVA gerada pela NC do checklist – ${t.tag}`,'atr'); });
     ver++; closeCk(); render(true);
   };
 }
@@ -512,7 +638,7 @@ function render(force){
   clock(); if(view==='sin'&&smode==='mapa') paintSVG();
   const m=Math.floor(sim/(15*MIN));
   if(force||ver!==lv||m!==lm||sel!==ls||view!==lview||of!==lof){
-    alarms(); if(view==='painel')painel(); if(view==='os')oslist(); sheet(); if(view==='sin'){ if(smode==='lista') eqlist(); else paintSVG(); }
+    alarms(); if(view==='kpi') $('kpi').innerHTML=kpiHTML(); if(view==='painel')painel(); if(view==='os')oslist(); sheet(); if(view==='sin'){ if(smode==='lista') eqlist(); else paintSVG(); }
     lv=ver;lm=m;ls=sel;lview=view;lof=of;
   }
 }
@@ -521,7 +647,7 @@ document.addEventListener('click',e=>{
   const b=e.target.closest('[data-a]');if(b){const o=OS.find(x=>x.id===b.dataset.o);if(!o)return;
     if(b.dataset.a==='ck'){openCk(o);return;}
     if(b.dataset.a==='ini'){o.st='exe';o.start=sim;o.end=sim+o.dur*HOUR;ev(sim,`${o.id} iniciada pelo app – ${o.t.tag}`,'ini');}
-    else{o.st='con';o.fin=sim;ev(sim,`${o.id} concluída pelo app – ${o.t.tag} · checklist ${o.t.ck}`,'con');}
+    else concludeOS(o,sim,'pelo app');
     ver++;render(true);return;}
   const it=e.target.closest('.item[data-tag]');if(it){select(it.dataset.tag);return;}
   const ec=e.target.closest('[data-eq]');if(ec){select(ec.dataset.eq);}
@@ -529,6 +655,7 @@ document.addEventListener('click',e=>{
 $('bk').onclick=()=>select(null);
 document.querySelectorAll('[data-m]').forEach(b=>b.onclick=()=>{smode=b.dataset.m;document.querySelectorAll('[data-m]').forEach(x=>x.classList.toggle('on',x===b));$('eqlist').style.display=smode==='lista'?'':'none';$('mapa').style.display=smode==='mapa'?'':'none';if(smode==='mapa')setZoom(zoom);render(true);});
 $('q').oninput=()=>render(true);
+document.addEventListener('click',e=>{const wb=e.target.closest('[data-win]'); if(wb){KWIN=+wb.dataset.win; render(true);}});
 document.querySelectorAll('nav.bn button').forEach(b=>b.onclick=()=>{view=b.dataset.v;document.querySelectorAll('nav.bn button').forEach(x=>x.classList.toggle('on',x===b));document.querySelectorAll('.view').forEach(v=>v.classList.toggle('on',v.id==='v-'+view));scrollTo(0,0);render(true);});
 document.querySelectorAll('[data-f]').forEach(b=>b.onclick=()=>{of=b.dataset.f;document.querySelectorAll('[data-f]').forEach(x=>x.classList.toggle('on',x===b));render(true);});
 $('play').onclick=()=>{running=!running;$('play').textContent=running?'❚❚':'▶';document.body.classList.toggle('paused',!running);};
@@ -542,7 +669,7 @@ let deferredPrompt=null;
 addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredPrompt=e;$('instb').style.display='';});
 $('instbtn').onclick=async()=>{if(!deferredPrompt)return;deferredPrompt.prompt();await deferredPrompt.userChoice;deferredPrompt=null;$('instb').style.display='none';};
 if(matchMedia('(display-mode: standalone)').matches||navigator.standalone){$('instx').textContent='App instalado neste celular.';}
-(function init(){const now=Date.now(),k=wkIdx(now);sim=wkStart(k-1);lastK=k-2;step(sim);advance(now);})();
+(function init(){const now=Date.now(),k=wkIdx(now);sim=wkStart(k-16);lastK=k-17;step(sim);advance(now);})();
 render(true);
 let lastT=performance.now();
 setInterval(()=>{const t=performance.now(),dt=t-lastT;lastT=t;if(running)advance(sim+dt*speed);render(false);},300);
