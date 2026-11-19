@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0a0e13">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Thunder Manutenção">
+<title>Thunder Manutenção – Cimbessul</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0e13;--panel:#111821;--panel2:#0e141c;--line:#1e2a38;--line2:#2a3a4d;--tx:#d9e1ea;--mu:#7f8ea0;--dim:#4f5d6e;--yel:#f5c400;
+--ok:#2ec27e;--sem:#e9c46a;--hoje:#f4a14a;--exe:#3d8bfd;--atr:#ef4b4b;--lub:#36c5d6;
+--st:env(safe-area-inset-top,0px);--sb:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--bg);color:var(--tx);font-family:Barlow,system-ui,sans-serif;font-size:15px;overscroll-behavior-y:none}
+button{font-family:inherit;cursor:pointer}
+.mono{font-family:"JetBrains Mono",ui-monospace,monospace}
+.hd{position:sticky;top:0;z-index:5;background:linear-gradient(#141c26,#0f151d);border-bottom:2px solid var(--yel);padding:calc(8px + var(--st)) 14px 8px;display:flex;align-items:center;gap:10px}
+.hd b{font-family:"Barlow Condensed";font-size:20px;letter-spacing:2px}
+.hd .grow{flex:1}
+.ck{text-align:right;line-height:1.1}
+.ck .d{font-family:"JetBrains Mono";font-size:13px;font-weight:600}
+.ck .w{font-size:10.5px;color:var(--mu);letter-spacing:.6px;text-transform:uppercase}
+.ib{white-space:nowrap;background:#1b2633;border:1px solid var(--line2);color:var(--tx);border-radius:8px;height:34px;min-width:34px;padding:0 8px;font-size:12px;font-weight:600}
+.ib.play{color:var(--yel);font-size:14px}
+.sub{display:flex;justify-content:space-between;align-items:center;padding:6px 14px;font-size:11px;color:var(--mu);background:#0d131a;border-bottom:1px solid var(--line)}
+.sub .sim{color:var(--yel);border:1px solid #6b5600;border-radius:4px;padding:1px 6px;letter-spacing:1px}
+main{padding:12px 12px calc(84px + var(--sb))}
+.view{display:none}.view.on{display:block}
+h2{font-family:"Barlow Condensed";font-weight:600;font-size:14px;letter-spacing:1.5px;text-transform:uppercase;color:var(--mu);margin:16px 2px 8px}
+h2:first-child{margin-top:2px}
+.kg{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.kpi{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 12px;position:relative;overflow:hidden}
+.kpi .l{font-size:10.5px;color:var(--mu);text-transform:uppercase;letter-spacing:.8px}
+.kpi .v{font-family:"JetBrains Mono";font-size:24px;font-weight:600;margin-top:2px}
+.kpi .s{font-size:11.5px;color:var(--mu)}
+.kpi .bar{position:absolute;left:0;bottom:0;height:3px}
+.stbar{display:flex;height:12px;border-radius:6px;overflow:hidden;margin:4px 0 6px}
+.stleg{display:flex;flex-wrap:wrap;gap:4px 12px;font-size:12px;color:var(--mu)}
+.stleg i{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:4px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:10px}
+.item{display:flex;gap:10px;padding:10px 12px;border-bottom:1px solid var(--line);align-items:flex-start}
+.item:last-child{border-bottom:0}
+.item .tg{font-family:"JetBrains Mono";font-weight:600;color:var(--yel);font-size:13px;min-width:58px}
+.item .tx{flex:1;min-width:0;line-height:1.3;font-size:14px}
+.item .mt{font-size:11.5px;color:var(--mu);margin-top:3px}
+.empty{padding:14px;color:var(--mu);font-size:13px}
+.pill{display:inline-block;padding:2px 8px;border-radius:999px;font-size:10.5px;font-weight:600;white-space:nowrap}
+.p-ok{background:#123826;color:#6ee7a8}.p-sem{background:#3a3214;color:#f3d77e}.p-hoje{background:#3d2a12;color:#f8bf7d}
+.p-exe{background:#14284a;color:#8bb8ff}.p-atr{background:#401818;color:#ff8f8f}.p-con{background:#17262f;color:#8fb2c4}
+.p-L{background:#0f3036;color:#7fe3ee}.p-M{background:#24303d;color:#b9c6d4}
+.chips{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px;margin:0 -12px 8px;padding:0 12px 4px}
+.chip{flex:none;background:transparent;border:1px solid var(--line2);color:var(--mu);border-radius:999px;padding:6px 12px;font-size:13px;font-weight:600}
+.chip.on{background:#233246;color:var(--tx);border-color:#3b5370}
+.synbox{overflow:auto;border:1px solid var(--line);border-radius:10px;background:var(--panel2);touch-action:pan-x pan-y}
+.syntools{display:flex;gap:6px;margin-bottom:8px;align-items:center}
+.syntools .grow{flex:1}
+svg{display:block}
+.eq{cursor:pointer}
+.eq .body{stroke-width:1.6}
+.eq.sel .body{stroke:#fff!important;stroke-width:2.4}
+.conv .hit{stroke:transparent;stroke-width:22;fill:none}
+.conv .belt{fill:none;stroke-width:5;stroke-linecap:round}
+.conv .flow{fill:none;stroke:#e9eef5;stroke-width:1.6;stroke-dasharray:5 11;opacity:.75;animation:flow 1.1s linear infinite;pointer-events:none}
+.conv.stop .flow{display:none}
+.conv.sel .belt{stroke-width:7}
+@keyframes flow{to{stroke-dashoffset:-16}}
+.paused .conv .flow{animation-play-state:paused}
+.lbl{font-family:"JetBrains Mono";font-size:10.5px;fill:#c3cdd8;pointer-events:none}
+.lbls{font-family:Barlow;font-size:10px;fill:var(--mu);pointer-events:none}
+.sec{font-family:"Barlow Condensed";font-size:14px;letter-spacing:2px;fill:#5d6c7e;font-weight:600}
+.blink{animation:blink 1s steps(2) infinite}
+@keyframes blink{50%{opacity:.25}}
+.tip{display:none!important}
+nav.bn{position:fixed;left:0;right:0;bottom:0;z-index:6;background:#0f151d;border-top:1px solid var(--line2);display:grid;grid-template-columns:repeat(4,1fr);padding-bottom:var(--sb)}
+nav.bn button{background:none;border:0;color:var(--mu);padding:8px 0 9px;font-size:11px;font-weight:600;display:flex;flex-direction:column;align-items:center;gap:3px;position:relative}
+nav.bn button.on{color:var(--yel)}
+nav.bn svg{width:22px;height:22px}
+.badge{position:absolute;top:4px;left:calc(50% + 6px);background:var(--atr);color:#fff;border-radius:999px;font-size:10px;min-width:17px;height:17px;line-height:17px;padding:0 4px}
+.bk{position:fixed;inset:0;background:#000a;z-index:7;display:none}
+.sheet{position:fixed;left:0;right:0;bottom:0;z-index:8;background:var(--panel);border-top:2px solid var(--yel);border-radius:16px 16px 0 0;max-height:86vh;overflow:auto;transform:translateY(105%);transition:transform .25s;padding:0 14px calc(16px + var(--sb))}
+.sheet.on{transform:none}.bk.on{display:block}
+.grab{width:42px;height:4px;border-radius:2px;background:var(--line2);margin:8px auto 10px}
+.tagh{display:flex;align-items:center;gap:10px}
+.tagh .t{font-family:"JetBrains Mono";font-size:22px;font-weight:600;color:var(--yel)}
+.tagh .x{margin-left:auto}
+.desc{margin:6px 0 4px;line-height:1.35}
+.meta{font-size:12px;color:var(--mu)}
+.os{border:1px solid var(--line);border-radius:10px;padding:10px;background:var(--panel2);margin-bottom:8px}
+.os .r1{display:flex;gap:6px;align-items:center;font-size:12px;color:var(--mu);flex-wrap:wrap}
+.os .r2{margin-top:5px;line-height:1.3}
+.os .r3{display:flex;gap:8px;margin-top:8px;align-items:center}
+.btn{background:#1d2a3a;border:1px solid var(--line2);color:var(--tx);border-radius:8px;padding:9px 14px;font-size:13px;font-weight:600}
+.btn.y{background:#3a3000;border-color:#6b5600;color:var(--yel)}
+.plan td{padding:6px 2px;border-bottom:1px solid var(--line);vertical-align:top;font-size:13px}
+.plan{width:100%;border-collapse:collapse}
+.plan td:last-child{text-align:right;color:var(--mu);white-space:nowrap}
+.ev div{padding:8px 12px;border-bottom:1px solid var(--line);font-size:13px}
+.ev .tm{color:var(--mu);font-family:"JetBrains Mono";font-size:11px;display:block}
+.inst{font-size:13px;color:var(--mu);line-height:1.5}
+</style>
+</head>
+<body>
+<header class="hd">
+  <svg width="28" height="28" viewBox="0 0 34 34" aria-hidden="true"><circle cx="17" cy="17" r="14" fill="none" stroke="#f5c400" stroke-width="3" stroke-dasharray="20 2"/><path d="M20 7 L10 19 h6 l-3 8 l11-13 h-6z" fill="#f5c400"/></svg>
+  <b>THUNDER</b>
+  <span class="grow"></span>
+  <div class="ck"><div class="d" id="clk">--</div><div class="w" id="wk">--</div></div>
+  <button class="ib play" id="play" aria-label="Pausar">❚❚</button>
+  <button class="ib" id="spd">1 h/s</button>
+</header>
+<div class="sub"><span>Cimbessul · Paranaguá – Manutenção e Lubrificação</span><span class="sim">SIMULAÇÃO</span></div>
+
+<main>
+  <section class="view on" id="v-painel">
+    <h2>Semana atual</h2>
+    <div class="kg" id="kpis"></div>
+    <h2>Status dos equipamentos</h2>
+    <div class="card" style="padding:10px 12px"><div class="stbar" id="stbar"></div><div class="stleg" id="stleg"></div></div>
+    <h2>Em execução agora</h2>
+    <div class="card" id="exe"></div>
+    <h2>Programadas para hoje</h2>
+    <div class="card" id="hoje"></div>
+    <h2>Instalar no celular</h2>
+    <div class="card inst" style="padding:12px"><span id="instx">Android (Chrome): toque em <b>Instalar app</b> ou menu ⋮ → <b>Instalar app</b>.<br>iPhone (Safari): Compartilhar → <b>Adicionar à Tela de Início</b>.</span><div id="instb" style="display:none;margin-top:8px"><button class="btn y" id="instbtn">Instalar app neste celular</button></div></div>
+  </section>
+
+  <section class="view" id="v-sin">
+    <div class="syntools"><button class="ib" id="zo">−</button><button class="ib" id="zi">+</button><button class="ib" id="zf">Ajustar</button><span class="grow"></span><span class="meta">Toque num equipamento</span></div>
+    <div class="synbox" id="synbox"><div id="synwrap"></div></div>
+    <div class="stleg" style="margin-top:8px">
+      <span><i style="background:var(--ok)"></i>Em dia</span><span><i style="background:var(--sem)"></i>OS na semana</span><span><i style="background:var(--hoje)"></i>OS hoje</span><span><i style="background:var(--exe)"></i>Em execução</span><span><i style="background:var(--atr)"></i>Atrasada</span><span><i style="background:var(--lub);border-radius:50%"></i>Lubrificação pendente</span>
+    </div>
+  </section>
+
+  <section class="view" id="v-os">
+    <div class="chips" id="chips">
+      <button class="chip on" data-f="hoje">Hoje</button><button class="chip" data-f="sem">Semana</button><button class="chip" data-f="M">Manutenção</button><button class="chip" data-f="L">Lubrificação</button><button class="chip" data-f="exe">Em execução</button><button class="chip" data-f="atr">Atrasadas</button><button class="chip" data-f="ev">Eventos</button>
+    </div>
+    <div class="card" id="oslist"></div>
+  </section>
+
+  <section class="view" id="v-al">
+    <h2>Alarmes ativos – OS atrasadas</h2>
+    <div class="card" id="alarms"></div>
+  </section>
+</main>
+
+<nav class="bn">
+  <button data-v="painel" class="on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg>Painel</button>
+  <button data-v="sin"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 18h6l3-8h4l2 4h3"/><rect x="2" y="15" width="4" height="6"/><rect x="18" y="11" width="4" height="10"/></svg>Sinótico</button>
+  <button data-v="os"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8h6M9 12h6M9 16h4"/></svg>OS</button>
+  <button data-v="al"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l9 16H3z"/><path d="M12 10v4M12 17v.5"/></svg>Alarmes<span class="badge" id="bdg" style="display:none">0</span></button>
+</nav>
+<div class="bk" id="bk"></div>
+<div class="sheet" id="sheet"></div>
+<div class="tip" id="tip"></div>
+
+<script>
+const DATA = {"t":[["M","TB-01","Unidade hidráulica","Verificar nível, temperatura, vazamentos e indicador de saturação dos filtros","I","Mecânica","S",1,1,0.25,"Operando","O3","CM-01"],["M","TB-01","Unidade hidráulica","Trocar elementos filtrantes de retorno e pressão + respiro","P","Mecânica","SM",26,25,4,"Parado","","CM-01"],["M","TB-01","Cilindros e mangueiras","Inspecionar hastes, vedações, mangueiras, conexões e fixações","I","Mecânica","M",4,3,1,"Parado","","CM-01"],["M","TB-01","Estrutura e travas","Inspecionar estrutura, soldas, batentes, travas de roda e encosto de para-choque","I","Mecânica","M",4,3,2,"Parado","","CM-01"],["M","TB-01","Comandos e intertravamentos","Testar fins de curso, botoeiras, emergências e intertravamento de subida","N","Elétrica","M",4,3,1,"Parado","","CM-01"],["M","TB-01","Conjunto completo","Revisão geral: vedações de cilindros, válvulas, bomba, motor e estrutura (NR-12)","P","Mecânica","A",52,48,72,"Parado","","CM-01"],["M","MG-01","Grelhas","Inspecionar grelhas, fixações e desgaste; remover obstruções","I","Mecânica","S",1,1,0.5,"Parado","","CM-02"],["M","MG-01","Corpo da moega","Inspecionar chapas de desgaste, revestimentos e pontos de corrosão","I","Mecânica","T",13,12,4,"Parado","","CM-02"],["M","MG-01","Corpo da moega","Substituir revestimentos/chapas de desgaste comprometidos","P","Mecânica","A",52,7,48,"Parado","","CM-02"],["M","BR-01","Plataforma e células de carga","Limpar fosso/plataforma, verificar batentes, cabos e caixa de junção","I","Automação","M",4,3,1,"Parado","","CM-03"],["M","BR-01","Sistema de pesagem","Aferição interna com pesos-padrão e registro","P","Automação","T",13,2,6,"Parado","","CM-03"],["M","BR-01","Sistema de pesagem","Verificação metrológica INMETRO/IPEM (agendar)","N","Terceiros","A",52,49,8,"Parado","","CM-03"],["M","BRF-01","Plataforma e células de carga","Limpar fosso/plataforma, verificar batentes, cabos e caixa de junção","I","Automação","M",4,3,1,"Parado","","CM-03"],["M","BRF-01","Sistema de pesagem","Aferição interna com pesos-padrão e registro","P","Automação","T",13,6,6,"Parado","","CM-03"],["M","BRF-01","Sistema de pesagem","Verificação metrológica INMETRO/IPEM (agendar)","N","Terceiros","A",52,40,8,"Parado","","CM-03"],["M","AM-01","Sonda e mangueiras","Inspecionar sonda, mangueiras de transporte pneumático e ciclone","I","Mecânica","S",1,1,0.5,"Operando","","CM-04"],["M","AM-01","Soprador/turbina","Verificar soprador, filtro de ar e correias","P","Mecânica","M",4,3,1,"Parado","","CM-04"],["M","RD-01","Corrente e taliscas","Inspecionar corrente, taliscas, coroas/rodas dentadas e esticamento","I","Mecânica","M",4,1,4,"Parado","","CM-05"],["M","RD-01","Calha e fundo","Medir espessura das chapas de fundo/UHMW e verificar desgaste","I","Mecânica","SM",26,25,6,"Parado","","CM-05"],["M","RD-01","Conjunto acionamento","Análise de vibração (motor, redutor, mancais)","D","Preditiva","M",4,4,0.25,"Operando","","CM-05"],["M","RD-01","Conjunto completo","Revisão geral: corrente, coroas, fundo, mancais e alinhamento","P","Mecânica","A",52,1,72,"Parado","","CM-05"],["M","RD-02","Corrente e taliscas","Inspecionar corrente, taliscas, coroas/rodas dentadas e esticamento","I","Mecânica","M",4,2,4,"Parado","","CM-05"],["M","RD-02","Calha e fundo","Medir espessura das chapas de fundo/UHMW e verificar desgaste","I","Mecânica","SM",26,26,6,"Parado","","CM-05"],["M","RD-02","Conjunto acionamento","Análise de vibração (motor, redutor, mancais)","D","Preditiva","M",4,4,0.25,"Operando","","CM-05"],["M","RD-02","Conjunto completo","Revisão geral: corrente, coroas, fundo, mancais e alinhamento","P","Mecânica","A",52,5,72,"Parado","","CM-05"],["M","RD-03","Corrente e taliscas","Inspecionar corrente, taliscas, coroas/rodas dentadas e esticamento","I","Mecânica","M",4,1,4,"Parado","","CM-05"],["M","RD-03","Calha e fundo","Medir espessura das chapas de fundo/UHMW e verificar desgaste","I","Mecânica","SM",26,15,6,"Parado","","CM-05"],["M","RD-03","Conjunto acionamento","Análise de vibração (motor, redutor, mancais)","D","Preditiva","M",4,3,0.25,"Operando","","CM-05"],["M","RD-03","Conjunto completo","Revisão geral: corrente, coroas, fundo, mancais e alinhamento","P","Mecânica","A",52,9,72,"Parado","","CM-05"],["M","RD-04","Corrente e taliscas","Inspecionar corrente, taliscas, coroas/rodas dentadas e esticamento","I","Mecânica","M",4,4,4,"Parado","","CM-05"],["M","RD-04","Calha e fundo","Medir espessura das chapas de fundo/UHMW e verificar desgaste","I","Mecânica","SM",26,19,6,"Parado","","CM-05"],["M","RD-04","Conjunto acionamento","Análise de vibração (motor, redutor, mancais)","D","Preditiva","M",4,4,0.25,"Operando","","CM-05"],["M","RD-04","Conjunto completo","Revisão geral: corrente, coroas, fundo, mancais e alinhamento","P","Mecânica","A",52,37,72,"Parado","","CM-05"],["M","TC-01","Correia","Inspecionar correia, emendas, desalinhamento, raspadores e guias laterais","I","Mecânica","S",1,1,1,"Operando","","CM-06"],["M","TC-01","Roletes","Inspecionar roletes de carga, impacto e retorno; substituir travados","I","Mecânica","M",4,2,4,"Parado","","CM-06"],["M","TC-01","Chutes e raspadores","Verificar chutes, revestimentos, raspadores e vedação de saias","P","Mecânica","M",4,1,4,"Parado","","CM-06"],["M","TC-01","Conjunto acionamento","Análise de vibração (motor, redutor, mancais)","D","Preditiva","M",4,3,0.25,"Operando","","CM-06"],["M","TC-01","Conjunto completo","Revisão geral: tambores, revestimentos, alinhamento, esticador, estrutura","P","Mecânica","A",52,41,72,"Parado","","CM-06"],["M","EL-01","Correia e canecas","Inspecionar correia, emenda, canecas, parafusos e alinhamento","I","Mecânica","M",4,2,6,"Parado","","CM-07"],["M","EL-01","Tambores","Verificar revestimento do tambor de cabeça e esticamento do pé","I","Mecânica","T",13,2,4,"Parado","","CM-07"],["M","EL-01","Conjunto acionamento","Análise de vibração (motor, redutor, mancais)","D","Preditiva","M",4,4,0.25,"Operando","","CM-07"],["M","EL-01","Conjunto completo","Revisão geral: canecas, correia, tambores, mancais, alívio de explosão","P","Mecânica","A",52,7,128,"Parado","","CM-07"],["M","EL-04","Correia e canecas","Inspecionar correia, emenda, canecas, parafusos e alinhamento","I","Mecânica","M",4,2,6,"Parado","","CM-07"],["M","EL-04","Tambores","Verificar revestimento do tambor de cabeça e esticamento do pé","I","Mecânica","T",13,6,4,"Parado","","CM-07"],["M","EL-04","Conjunto acionamento","Análise de vibração (motor, redutor, mancais)","D","Preditiva","M",4,3,0.25,"Operando","","CM-07"],["M","EL-04","Conjunto completo","Revisão geral: canecas, correia, tambores, mancais, alívio de explosão","P","Mecânica","A",52,39,128,"Parado","","CM-07"],["M","TC-02","Correia","Inspecionar correia, emendas, desalinhamento, raspadores e guias laterais","I","Mecânica","S",1,1,1,"Operando","","CM-06"],["M","TC-02","Roletes","Inspecionar roletes de carga, impacto e retorno; substituir travados","I","Mecânica","M",4,4,4,"Parado","","CM-06"],["M","TC-02","Chutes e raspadores","Verificar chutes, revestimentos, raspadores e vedação de saias","P","Mecânica","M",4,2,4,"Parado","","CM-06"],["M","TC-02","Conjunto acionamento","Análise de vibração (motor, redutor, mancais)","D","Preditiva","M",4,4,0.25,"Operando","","CM-06"],["M","TC-02","Conjunto completo","Revisão geral: tambores, revestimentos, alinhamento, esticador, estrutura","P","Mecânica","A",52,45,72,"Parado","","CM-06"],["M","TC-02A","Correia","Inspecionar correia, emendas, desalinhamento, raspadores e guias laterais","I","Mecânica","S",1,1,1,"Operando","","CM-06"],["M","TC-02A","Roletes","Inspecionar roletes de carga, impacto e retorno; substituir travados","I","Mecânica","M",4,1,4,"Parado","","CM-06"],["M","TC-02A","Chutes e raspadores","Verificar chutes, revestimentos, raspadores e vedação de saias","P","Mecânica","M",4,4,4,"Parado","","CM-06"],["M","TC-02A","Conjunto acionamento","Análise de vibração (motor, redutor, mancais)","D","Preditiva","M",4,3,0.25,"Operando","","CM-06"],["M","TC-02A","Conjunto completo","Revisão geral: tambores, revestimentos, alinhamento, esticador, estrutura","P","Mecânica","A",52,49,72,"Parado","","CM-06"],["M","TR-01","Alimentação elétrica","Inspecionar enrolador de cabo/barramento, fins de curso e batentes","I","Elétrica","M",4,3,1,"Parado","","CM-08"],["M","TR-01","Conjunto completo","Revisão geral do tripper (estrutura, chutes, rodas, freio)","P","Mecânica","A",52,39,48,"Parado","","CM-08"],["M","TC-03","Correia","Inspecionar correia, emendas, desalinhamento, raspadores e guias laterais","I","Mecânica","S",1,1,1,"Operando","","CM-06"],["M","TC-03","Roletes","Inspecionar roletes de carga, impacto e retorno; substituir travados","I","Mecânica","M",4,2,4,"Parado","","CM-06"],["M","TC-03","Chutes e raspadores","Verificar chutes, revestimentos, raspadores e vedação de saias","P","Mecânica","M",4,3,4,"Parado","","CM-06"],["M","TC-03","Conjunto acionamento","Análise de vibração (motor, redutor, mancais)","D","Preditiva","M",4,4,0.25,"Operando","","CM-06"],["M","TC-03","Conjunto completo","Revisão geral: tambores, revestimentos, alinhamento, esticador, estrutura","P","Mecânica","A",52,2,72,"Parado","","CM-06"],["M","CG-01","Atuadores pneumáticos","Testar atuação, vazamentos, válvulas solenoides e FRL","I","Automação","M",4,3,2,"Parado","","CM-09"],["M","EL-02","Correia e canecas","Inspecionar correia, emenda, canecas, parafusos e alinhamento","I","Mecânica","M",4,1,6,"Parado","","CM-07"],["M","EL-02","Tambores","Verificar revestimento do tambor de cabeça e esticamento do pé","I","Mecânica","T",13,12,4,"Parado","","CM-07"],["M","EL-02","Conjunto acionamento","Análise de vibração (motor, redutor, mancais)","D","Preditiva","M",4,3,0.25,"Operando","","CM-07"],["M","EL-02","Conjunto completo","Revisão geral: canecas, correia, tambores, mancais, alívio de explosão","P","Mecânica","A",52,43,128,"Parado","","CM-07"],["M","VA-01","Correias e polias","Verificar tensão/alinhamento de correias em V e polias","I","Mecânica","M",4,4,1,"Parado","","CM-10"],["M","VA-01","Rotores e dutos","Inspecionar rotores, dutos de aeração e telas","P","Mecânica","SM",26,25,12,"Parado","","CM-10"],["M","TM-01","Cabos e central","Verificar leituras, cabos termométricos e central de termometria","I","Automação","M",4,3,1,"Operando","","CM-11"],["M","TM-01","Cabos termométricos","Inspeção dos cabos e fixações com armazém vazio","P","Automação","A",52,36,16,"Parado","","CM-11"],["M","ARM-01","Ambiente (poeira)","Inspeção de acúmulo de pó em vigas, galerias e túneis (risco de explosão)","I","Predial","S",1,1,1,"Operando","","CM-12"],["M","ARM-01","Cobertura e calhas","Inspecionar telhas, fixações, calhas e rufos (antes do período de chuvas)","I","Predial","T",13,4,12,"Operando","","CM-12"],["M","ARM-01","Estrutura metálica","Inspeção de corrosão, parafusos e soldas da estrutura e galerias (ambiente marinho)","I","Predial","SM",26,26,24,"Operando","","CM-12"],["M","ARM-01","Estrutura e cobertura","Recuperação de pintura anticorrosiva por setor (campanha contínua) e troca de telhas danificadas","P","Terceiros","M",4,1,32,"Operando","","CM-12"],["M","ARM-01","Túneis e espaços confinados","Verificar ventilação, iluminação, drenagem e acessos dos túneis (NR-33)","N","Predial","M",4,3,2,"Operando","","CM-12"],["M","TC-05A","Correia","Inspecionar correia, emendas, desalinhamento, raspadores e guias laterais","I","Mecânica","S",1,1,1,"Operando","","CM-06"],["M","TC-05A","Roletes","Inspecionar roletes de carga, impacto e retorno; substituir travados","I","Mecânica","M",4,1,4,"Parado","","CM-06"],["M","TC-05A","Chutes e raspadores","Verificar chutes, revestimentos, raspadores e vedação de saias","P","Mecânica","M",4,4,4,"Parado","","CM-06"],["M","TC-05A","Conjunto acionamento","Análise de vibração (motor, redutor, mancais)","D","Preditiva","M",4,4,0.25,"Operando","","CM-06"],["M","TC-05A","Conjunto completo","Revisão geral: tambores, revestimentos, alinhamento, esticador, estrutura","P","Mecânica","A",52,6,72,"Parado","","CM-06"],["M","TC-05","Correia","Inspecionar correia, emendas, desalinhamento, raspadores e guias laterais","I","Mecânica","S",1,1,1,"Operando","","CM-06"],["M","TC-05","Roletes","Inspecionar roletes de carga, impacto e retorno; substituir travados","I","Mecânica","M",4,2,4,"Parado","","CM-06"],["M","TC-05","Chutes e raspadores","Verificar chutes, revestimentos, raspadores e vedação de saias","P","Mecânica","M",4,3,4,"Parado","","CM-06"],["M","TC-05","Conjunto acionamento","Análise de vibração (motor, redutor, mancais)","D","Preditiva","M",4,3,0.25,"Operando","","CM-06"],["M","TC-05","Conjunto completo","Revisão geral: tambores, revestimentos, alinhamento, esticador, estrutura","P","Mecânica","A",52,38,72,"Parado","","CM-06"],["M","TR-02","Alimentação elétrica","Inspecionar enrolador de cabo/barramento, fins de curso e batentes","I","Elétrica","M",4,4,1,"Parado","","CM-08"],["M","TR-02","Conjunto completo","Revisão geral do tripper (estrutura, chutes, rodas, freio)","P","Mecânica","A",52,47,48,"Parado","","CM-08"],["M","TC-06","Correia","Inspecionar correia, emendas, desalinhamento, raspadores e guias laterais","I","Mecânica","S",1,1,1,"Operando","","CM-06"],["M","TC-06","Roletes","Inspecionar roletes de carga, impacto e retorno; substituir travados","I","Mecânica","M",4,4,4,"Parado","","CM-06"],["M","TC-06","Chutes e raspadores","Verificar chutes, revestimentos, raspadores e vedação de saias","P","Mecânica","M",4,1,4,"Parado","","CM-06"],["M","TC-06","Conjunto acionamento","Análise de vibração (motor, redutor, mancais)","D","Preditiva","M",4,4,0.25,"Operando","","CM-06"],["M","TC-06","Conjunto completo","Revisão geral: tambores, revestimentos, alinhamento, esticador, estrutura","P","Mecânica","A",52,42,72,"Parado","","CM-06"],["M","CG-02","Atuadores pneumáticos","Testar atuação, vazamentos, válvulas solenoides e FRL","I","Automação","M",4,2,2,"Parado","","CM-09"],["M","EL-03","Correia e canecas","Inspecionar correia, emenda, canecas, parafusos e alinhamento","I","Mecânica","M",4,2,6,"Parado","","CM-07"],["M","EL-03","Tambores","Verificar revestimento do tambor de cabeça e esticamento do pé","I","Mecânica","T",13,5,4,"Parado","","CM-07"],["M","EL-03","Conjunto acionamento","Análise de vibração (motor, redutor, mancais)","D","Preditiva","M",4,3,0.25,"Operando","","CM-07"],["M","EL-03","Conjunto completo","Revisão geral: canecas, correia, tambores, mancais, alívio de explosão","P","Mecânica","A",52,47,128,"Parado","","CM-07"],["M","VA-02","Correias e polias","Verificar tensão/alinhamento de correias em V e polias","I","Mecânica","M",4,3,1,"Parado","","CM-10"],["M","VA-02","Rotores e dutos","Inspecionar rotores, dutos de aeração e telas","P","Mecânica","SM",26,26,12,"Parado","","CM-10"],["M","TM-02","Cabos e central","Verificar leituras, cabos termométricos e central de termometria","I","Automação","M",4,4,1,"Operando","","CM-11"],["M","TM-02","Cabos termométricos","Inspeção dos cabos e fixações com armazém vazio","P","Automação","A",52,42,16,"Parado","","CM-11"],["M","ARM-02","Ambiente (poeira)","Inspeção de acúmulo de pó em vigas, galerias e túneis (risco de explosão)","I","Predial","S",1,1,1,"Operando","","CM-12"],["M","ARM-02","Cobertura e calhas","Inspecionar telhas, fixações, calhas e rufos (antes do período de chuvas)","I","Predial","T",13,1,12,"Operando","","CM-12"],["M","ARM-02","Estrutura metálica","Inspeção de corrosão, parafusos e soldas da estrutura e galerias (ambiente marinho)","I","Predial","SM",26,26,24,"Operando","","CM-12"],["M","ARM-02","Estrutura e cobertura","Recuperação de pintura anticorrosiva por setor (campanha contínua) e troca de telhas danificadas","P","Terceiros","M",4,2,32,"Operando","","CM-12"],["M","ARM-02","Túneis e espaços confinados","Verificar ventilação, iluminação, drenagem e acessos dos túneis (NR-33)","N","Predial","M",4,3,2,"Operando","","CM-12"],["M","TC-04-R","Correia","Inspecionar correia, emendas, desalinhamento, raspadores e guias laterais","I","Mecânica","S",1,1,1,"Operando","","CM-06"],["M","TC-04-R","Roletes","Inspecionar roletes de carga, impacto e retorno; substituir travados","I","Mecânica","M",4,3,4,"Parado","","CM-06"],["M","TC-04-R","Chutes e raspadores","Verificar chutes, revestimentos, raspadores e vedação de saias","P","Mecânica","M",4,2,4,"Parado","","CM-06"],["M","TC-04-R","Conjunto acionamento","Análise de vibração (motor, redutor, mancais)","D","Preditiva","M",4,4,0.25,"Operando","","CM-06"],["M","TC-04-R","Conjunto completo","Revisão geral: tambores, revestimentos, alinhamento, esticador, estrutura","P","Mecânica","A",52,46,72,"Parado","","CM-06"],["M","VD-01","Válvulas desviadoras/gavetas","Testar atuação, sensores de posição e vedação","I","Automação","M",4,2,2,"Parado","","CM-13"],["M","TC-08","Correia","Inspecionar correia, emendas, desalinhamento, raspadores e guias laterais","I","Mecânica","S",1,1,1,"Operando","","CM-06"],["M","TC-08","Roletes","Inspecionar roletes de carga, impacto e retorno; substituir travados","I","Mecânica","M",4,4,4,"Parado","","CM-06"],["M","TC-08","Chutes e raspadores","Verificar chutes, revestimentos, raspadores e vedação de saias","P","Mecânica","M",4,1,4,"Parado","","CM-06"],["M","TC-08","Conjunto acionamento","Análise de vibração (motor, redutor, mancais)","D","Preditiva","M",4,3,0.25,"Operando","","CM-06"],["M","TC-08","Conjunto completo","Revisão geral: tambores, revestimentos, alinhamento, esticador, estrutura","P","Mecânica","A",52,50,72,"Parado","","CM-06"],["M","EL-08","Correia e canecas","Inspecionar correia, emenda, canecas, parafusos e alinhamento","I","Mecânica","M",4,1,6,"Parado","","CM-07"],["M","EL-08","Tambores","Verificar revestimento do tambor de cabeça e esticamento do pé","I","Mecânica","T",13,7,4,"Parado","","CM-07"],["M","EL-08","Conjunto acionamento","Análise de vibração (motor, redutor, mancais)","D","Preditiva","M",4,4,0.25,"Operando","","CM-07"],["M","EL-08","Conjunto completo","Revisão geral: canecas, correia, tambores, mancais, alívio de explosão","P","Mecânica","A",52,4,128,"Parado","","CM-07"],["M","EL-09","Correia e canecas","Inspecionar correia, emenda, canecas, parafusos e alinhamento","I","Mecânica","M",4,2,6,"Parado","","CM-07"],["M","EL-09","Tambores","Verificar revestimento do tambor de cabeça e esticamento do pé","I","Mecânica","T",13,2,4,"Parado","","CM-07"],["M","EL-09","Conjunto acionamento","Análise de vibração (motor, redutor, mancais)","D","Preditiva","M",4,3,0.25,"Operando","","CM-07"],["M","EL-09","Conjunto completo","Revisão geral: canecas, correia, tambores, mancais, alívio de explosão","P","Mecânica","A",52,8,128,"Parado","","CM-07"],["M","BF-01","Balança de fluxo","Limpeza, inspeção de comportas/células e teste de zero","I","Automação","S",1,1,0.5,"Parado","","CM-14"],["M","BF-01","Balança de fluxo","Aferição com pesos-padrão","P","Automação","T",13,5,8,"Parado","","CM-14"],["M","BF-01","Balança de fluxo","Verificação metrológica INMETRO/IPEM (agendar)","N","Terceiros","A",52,5,12,"Parado","","CM-14"],["M","TC-09","Correia","Inspecionar correia, emendas, desalinhamento, raspadores e guias laterais","I","Mecânica","S",1,1,2.5,"Operando","","CM-06"],["M","TC-09","Roletes","Inspecionar roletes de carga, impacto e retorno; substituir travados","I","Mecânica","M",4,4,10,"Parado","","CM-06"],["M","TC-09","Chutes e raspadores","Verificar chutes, revestimentos, raspadores e vedação de saias","P","Mecânica","M",4,4,10,"Parado","","CM-06"],["M","TC-09","Conjunto acionamento","Análise de vibração (motor, redutor, mancais)","D","Preditiva","M",4,3,0.62,"Operando","","CM-06"],["M","TC-09","Conjunto completo","Revisão geral: tambores, revestimentos, alinhamento, esticador, estrutura","P","Mecânica","A",52,3,180,"Parado","","CM-06"],["M","T-01","Ambiente","Limpeza e inspeção de acúmulo de pó e derramamento de grão","I","Predial","S",1,1,1,"Operando","","CM-15"],["M","T-01","Chutes de transferência","Inspecionar chutes, revestimentos de desgaste, portas de inspeção e vedações","I","Mecânica","M",4,3,4,"Parado","","CM-15"],["M","T-01","Iluminação e tomadas","Ronda de iluminação, tomadas e caixas de passagem da torre","I","Elétrica","M",4,3,1,"Operando","","CM-15"],["M","T-01","Estrutura e acessos","Inspecionar estrutura, escadas, guarda-corpos, pisos de grade e corrosão (ambiente marinho)","I","Predial","T",13,11,6,"Operando","","CM-15"],["M","T-01","Chutes de transferência","Substituir revestimentos de desgaste dos chutes","P","Mecânica","A",52,49,24,"Parado","","CM-15"],["M","T-01","Estrutura","Recuperação de pintura anticorrosiva em pontos críticos","P","Terceiros","A",52,43,32,"Operando","","CM-15"],["M","CT-10","Correia","Inspecionar correia, emendas, desalinhamento, raspadores e guias laterais","I","Mecânica","S",1,1,1.5,"Operando","","CM-06"],["M","CT-10","Roletes","Inspecionar roletes de carga, impacto e retorno; substituir travados","I","Mecânica","M",4,1,6,"Parado","","CM-06"],["M","CT-10","Chutes e raspadores","Verificar chutes, revestimentos, raspadores e vedação de saias","P","Mecânica","M",4,2,6,"Parado","","CM-06"],["M","CT-10","Conjunto acionamento","Análise de vibração (motor, redutor, mancais)","D","Preditiva","M",4,3,0.38,"Operando","","CM-06"],["M","CT-10","Conjunto completo","Revisão geral: tambores, revestimentos, alinhamento, esticador, estrutura","P","Mecânica","A",52,36,108,"Parado","","CM-06"],["M","T-02","Ambiente","Limpeza e inspeção de acúmulo de pó e derramamento de grão","I","Predial","S",1,1,1,"Operando","","CM-15"],["M","T-02","Chutes de transferência","Inspecionar chutes, revestimentos de desgaste, portas de inspeção e vedações","I","Mecânica","M",4,2,4,"Parado","","CM-15"],["M","T-02","Iluminação e tomadas","Ronda de iluminação, tomadas e caixas de passagem da torre","I","Elétrica","M",4,4,1,"Operando","","CM-15"],["M","T-02","Estrutura e acessos","Inspecionar estrutura, escadas, guarda-corpos, pisos de grade e corrosão (ambiente marinho)","I","Predial","T",13,2,6,"Operando","","CM-15"],["M","T-02","Chutes de transferência","Substituir revestimentos de desgaste dos chutes","P","Mecânica","A",52,37,24,"Parado","","CM-15"],["M","T-02","Estrutura","Recuperação de pintura anticorrosiva em pontos críticos","P","Terceiros","A",52,44,32,"Operando","","CM-15"],["M","CT-11","Correia","Inspecionar correia, emendas, desalinhamento, raspadores e guias laterais","I","Mecânica","S",1,1,1.5,"Operando","","CM-06"],["M","CT-11","Roletes","Inspecionar roletes de carga, impacto e retorno; substituir travados","I","Mecânica","M",4,1,6,"Parado","","CM-06"],["M","CT-11","Chutes e raspadores","Verificar chutes, revestimentos, raspadores e vedação de saias","P","Mecânica","M",4,2,6,"Parado","","CM-06"],["M","CT-11","Conjunto acionamento","Análise de vibração (motor, redutor, mancais)","D","Preditiva","M",4,4,0.38,"Operando","","CM-06"],["M","CT-11","Conjunto completo","Revisão geral: tambores, revestimentos, alinhamento, esticador, estrutura","P","Mecânica","A",52,40,108,"Parado","","CM-06"],["M","T-03","Ambiente","Limpeza e inspeção de acúmulo de pó e derramamento de grão","I","Predial","S",1,1,1,"Operando","","CM-15"],["M","T-03","Chutes de transferência","Inspecionar chutes, revestimentos de desgaste, portas de inspeção e vedações","I","Mecânica","M",4,4,4,"Parado","","CM-15"],["M","T-03","Iluminação e tomadas","Ronda de iluminação, tomadas e caixas de passagem da torre","I","Elétrica","M",4,3,1,"Operando","","CM-15"],["M","T-03","Estrutura e acessos","Inspecionar estrutura, escadas, guarda-corpos, pisos de grade e corrosão (ambiente marinho)","I","Predial","T",13,6,6,"Operando","","CM-15"],["M","T-03","Chutes de transferência","Substituir revestimentos de desgaste dos chutes","P","Mecânica","A",52,4,24,"Parado","","CM-15"],["M","T-03","Estrutura","Recuperação de pintura anticorrosiva em pontos críticos","P","Terceiros","A",52,40,32,"Operando","","CM-15"],["M","CT-12","Correia","Inspecionar correia, emendas, desalinhamento, raspadores e guias laterais","I","Mecânica","S",1,1,1,"Operando","","CM-06"],["M","CT-12","Roletes","Inspecionar roletes de carga, impacto e retorno; substituir travados","I","Mecânica","M",4,1,4,"Parado","","CM-06"],["M","CT-12","Chutes e raspadores","Verificar chutes, revestimentos, raspadores e vedação de saias","P","Mecânica","M",4,3,4,"Parado","","CM-06"],["M","CT-12","Conjunto acionamento","Análise de vibração (motor, redutor, mancais)","D","Preditiva","M",4,4,0.25,"Operando","","CM-06"],["M","CT-12","Conjunto completo","Revisão geral: tambores, revestimentos, alinhamento, esticador, estrutura","P","Mecânica","A",52,48,72,"Parado","","CM-06"],["M","T-04","Ambiente","Limpeza e inspeção de acúmulo de pó e derramamento de grão","I","Predial","S",1,1,1,"Operando","","CM-15"],["M","T-04","Chutes de transferência","Inspecionar chutes, revestimentos de desgaste, portas de inspeção e vedações","I","Mecânica","M",4,2,4,"Parado","","CM-15"],["M","T-04","Iluminação e tomadas","Ronda de iluminação, tomadas e caixas de passagem da torre","I","Elétrica","M",4,4,1,"Operando","","CM-15"],["M","T-04","Estrutura e acessos","Inspecionar estrutura, escadas, guarda-corpos, pisos de grade e corrosão (ambiente marinho)","I","Predial","T",13,5,6,"Operando","","CM-15"],["M","T-04","Chutes de transferência","Substituir revestimentos de desgaste dos chutes","P","Mecânica","A",52,1,24,"Parado","","CM-15"],["M","T-04","Estrutura","Recuperação de pintura anticorrosiva em pontos críticos","P","Terceiros","A",52,8,32,"Operando","","CM-15"],["M","CT-13","Correia","Inspecionar correia, emendas, desalinhamento, raspadores e guias laterais","I","Mecânica","S",1,1,1.5,"Operando","","CM-06"],["M","CT-13","Roletes","Inspecionar roletes de carga, impacto e retorno; substituir travados","I","Mecânica","M",4,1,6,"Parado","","CM-06"],["M","CT-13","Chutes e raspadores","Verificar chutes, revestimentos, raspadores e vedação de saias","P","Mecânica","M",4,2,6,"Parado","","CM-06"],["M","CT-13","Conjunto acionamento","Análise de vibração (motor, redutor, mancais)","D","Preditiva","M",4,3,0.38,"Operando","","CM-06"],["M","CT-13","Conjunto completo","Revisão geral: tambores, revestimentos, alinhamento, esticador, estrutura","P","Mecânica","A",52,44,108,"Parado","","CM-06"],["M","FM-01","Mangas e pulsos","Verificar pressão diferencial (ΔP), pulsos de limpeza e drenos","I","Mecânica","S",1,1,0.5,"Operando","","CM-16"],["M","FM-01","Ventilador do filtro","Análise de vibração e verificação de correias/acoplamento","D","Preditiva","M",4,3,0.25,"Operando","","CM-16"],["M","FM-01","Mangas e gaiolas","Inspeção interna de mangas, gaiolas, venturis e painel de alívio de explosão","P","Mecânica","T",13,12,8,"Parado","","CM-16"],["M","FM-01","Mangas","Substituição programada das mangas (ou conforme ΔP)","P","Mecânica","A",52,36,36,"Parado","","CM-16"],["M","CP-01","Compressor","Verificar nível de óleo, ΔP do separador, temperatura e drenos","I","Mecânica","S",1,1,0.25,"Operando","O4","CM-17"],["M","CP-01","Compressor","Limpar/trocar filtro de ar e limpar radiador","P","Mecânica","M",4,3,1,"Parado","","CM-17"],["M","RA-01","Reservatório de ar","Drenar condensado e verificar manômetro e válvula de segurança","I","Mecânica","S",1,1,0.25,"Operando","","CM-18"],["M","RA-01","Reservatório de ar","Calibrar/testar válvula de segurança e manômetro","N","Terceiros","A",52,9,2,"Parado","","CM-18"],["M","RA-01","Reservatório de ar","Inspeção de segurança periódica NR-13 (conforme categoria – verificar prontuário)","N","Terceiros","A",52,48,16,"Parado","","CM-18"],["M","GE-01","Grupo gerador","Teste de partida em vazio, nível de óleo, água e combustível","I","Elétrica","Q",2,2,0.5,"Operando","O6","CM-19"],["M","GE-01","Grupo gerador","Teste com carga e verificação da transferência (QTA)","P","Elétrica","T",13,6,4,"Operando","","CM-19"],["M","TL-01","Talhas e monovias","Inspeção de ganchos, cabos/correntes, freio e fim de curso; lubrificar","N","Mecânica","T",13,2,3,"Parado","G1 / O5","CM-20"],["M","TL-01","Talhas e monovias","Inspeção anual com teste de carga e laudo (NR-11/NR-12)","N","Terceiros","A",52,50,12,"Parado","","CM-20"],["M","SE-01","Subestação","Inspeção visual: ruídos, aquecimento, nível/temperatura dos transformadores, sílica-gel","I","Elétrica","M",4,3,2,"Operando","","CM-21"],["M","SE-01","Subestação","Termografia de conexões, chaves e barramentos","D","Preditiva","SM",26,26,3,"Operando","","CM-21"],["M","SE-01","Transformadores","Análise físico-química e cromatográfica do óleo isolante","D","Terceiros","A",52,41,4,"Operando","","CM-21"],["M","SE-01","Subestação","Manutenção preventiva com desligamento (limpeza, reaperto, ensaios de isolamento, relés)","P","Terceiros","A",52,9,32,"Parado","","CM-21"],["M","CCM-01","Painéis e CCMs","Inspeção visual, ventilação/filtros dos painéis, sinalização e limpeza externa","I","Elétrica","M",4,2,2,"Operando","","CM-21"],["M","CCM-01","Painéis e CCMs","Termografia de painéis, contatores, disjuntores e inversores","D","Preditiva","T",13,11,4,"Operando","","CM-21"],["M","CCM-01","Painéis e CCMs","Limpeza interna, reaperto de bornes e teste de proteções (desenergizado)","P","Elétrica","SM",26,25,32,"Parado","","CM-21"],["M","CCM-01","Documentação","Atualizar Prontuário das Instalações Elétricas e diagramas (NR-10)","N","Elétrica","A",52,42,8,"Operando","","CM-21"],["M","MT-01","Motores","Medir corrente, temperatura e verificar ventilação/tampa defletora","I","Elétrica","M",4,3,2,"Operando","","CM-21"],["M","MT-01","Motores","Medição de resistência de isolamento (megômetro) dos motores críticos","P","Elétrica","SM",26,25,16,"Parado","","CM-21"],["M","SPDA-01","SPDA","Inspeção visual de captores, descidas, conexões e corrosão","I","Elétrica","SM",26,26,8,"Operando","","CM-12"],["M","SPDA-01","SPDA e aterramento","Inspeção completa com medição de continuidade/aterramento e laudo (NBR 5419)","N","Terceiros","A",52,46,16,"Operando","","CM-12"],["M","IL-01","Iluminação","Ronda de iluminação: lâmpadas/luminárias queimadas, fixações (Ex quando aplicável)","I","Elétrica","M",4,4,2,"Operando","","CM-12"],["M","IL-01","Iluminação de emergência","Teste de autonomia da iluminação de emergência","N","Elétrica","T",13,11,2,"Operando","","CM-12"],["M","CLP-01","CLP e rede","Verificar diagnósticos, alarmes, baterias e status da rede","I","Automação","M",4,3,1,"Operando","","CM-22"],["M","CLP-01","CLP e supervisório","Backup de programas do CLP, IHM e supervisório","P","Automação","T",13,12,2,"Operando","","CM-22"],["M","CLP-01","Nobreaks","Teste de nobreaks/baterias da automação","P","Automação","SM",26,25,2,"Operando","","CM-22"],["M","SEG-01","Chaves de emergência","Testar cordões de emergência (pull-cord) e botoeiras de todos os transportadores","N","Automação","M",4,1,8,"Parado","","CM-22"],["M","SEG-01","Sensores","Testar sensores de desalinhamento, rotação (embuchamento), nível e rasgo","N","Automação","M",4,2,8,"Parado","","CM-22"],["M","SEG-01","Detector de metais / eletroímã","Testar detector de metais e eletroímã/separador magnético","I","Automação","M",4,4,1,"Operando","","CM-22"],["M","SEG-01","Proteções de máquinas","Inspecionar grades e proteções fixas/móveis (NR-12)","N","Mecânica","T",13,12,4,"Operando","","CM-22"],["M","INC-01","Extintores","Inspeção mensal dos extintores (carga, lacre, acesso, sinalização)","N","Predial","M",4,2,2,"Operando","","CM-23"],["M","INC-01","Bombas de incêndio","Partida semanal da bomba de incêndio (elétrica/diesel) e verificação de pressão","N","Mecânica","S",1,1,0.5,"Operando","O6","CM-23"],["M","INC-01","Hidrantes e mangueiras","Inspeção de hidrantes, abrigos e mangueiras","N","Predial","T",13,6,3,"Operando","","CM-23"],["M","INC-01","Extintores e mangueiras","Recarga de extintores e teste hidrostático de mangueiras (empresa credenciada)","N","Terceiros","A",52,45,4,"Operando","","CM-23"],["M","PRD-01","Pátio e drenagem","Limpeza de canaletas, caixas de passagem e bocas de lobo","P","Predial","M",4,1,8,"Operando","","CM-12"],["M","PRD-01","Edificações de apoio","Inspeção predial: telhados, instalações hidráulicas, portas e portões","I","Predial","T",13,5,4,"Operando","","CM-12"],["M","PRD-01","Pisos e pavimentos","Inspecionar pisos da moega/balanças e pavimento do pátio","I","Predial","SM",26,26,3,"Operando","","CM-12"],["L","TB-01","Pinos e articulações da plataforma","Lubrificar pinos, buchas e articulações da plataforma e dos cilindros","L","Lubrificação","S",1,1,0.5,"Parado","G4","CL-01"],["L","TB-01","Unidade hidráulica","Coletar amostra de óleo para análise (viscosidade, água, contagem ISO 4406)","D","Preditiva","T",13,10,0.5,"Operando","O3","CL-01"],["L","TB-01","Unidade hidráulica","Trocar óleo hidráulico (ou conforme análise) e limpar reservatório","L","Lubrificação","A",52,3,12,"Parado","O3","CL-01"],["L","MG-01","Comporta de descarga","Lubrificar guias e mancais da comporta / cremalheira","L","Lubrificação","M",4,2,0.5,"Parado","G3","CL-02"],["L","AM-01","Lança e articulações","Lubrificar articulações e giro da lança","L","Lubrificação","Q",2,2,0.25,"Parado","G1","CL-03"],["L","RD-01","Mancais cabeça e pé","Lubrificar mancais de rolamento (cabeça, pé e esticador)","L","Lubrificação","Q",2,1,0.5,"Parado","G1","CL-04"],["L","RD-01","Redutor","Verificar nível de óleo, ruído, temperatura e vazamentos","I","Lubrificação","S",1,1,0.25,"Operando","O1","CL-04"],["L","RD-01","Redutor","Trocar óleo do redutor (ou a cada 5.000 h / conforme análise)","L","Lubrificação","A",52,8,4,"Parado","O1","CL-04"],["L","RD-01","Acoplamento","Inspecionar e relubrificar acoplamento","L","Lubrificação","SM",26,10,2,"Parado","G2","CL-04"],["L","RD-02","Mancais cabeça e pé","Lubrificar mancais de rolamento (cabeça, pé e esticador)","L","Lubrificação","Q",2,1,0.5,"Parado","G1","CL-04"],["L","RD-02","Redutor","Verificar nível de óleo, ruído, temperatura e vazamentos","I","Lubrificação","S",1,1,0.25,"Operando","O1","CL-04"],["L","RD-02","Redutor","Trocar óleo do redutor (ou a cada 5.000 h / conforme análise)","L","Lubrificação","A",52,40,4,"Parado","O1","CL-04"],["L","RD-02","Acoplamento","Inspecionar e relubrificar acoplamento","L","Lubrificação","SM",26,12,2,"Parado","G2","CL-04"],["L","RD-03","Mancais cabeça e pé","Lubrificar mancais de rolamento (cabeça, pé e esticador)","L","Lubrificação","Q",2,2,0.5,"Parado","G1","CL-04"],["L","RD-03","Redutor","Verificar nível de óleo, ruído, temperatura e vazamentos","I","Lubrificação","S",1,1,0.25,"Operando","O1","CL-04"],["L","RD-03","Redutor","Trocar óleo do redutor (ou a cada 5.000 h / conforme análise)","L","Lubrificação","A",52,44,4,"Parado","O1","CL-04"],["L","RD-03","Acoplamento","Inspecionar e relubrificar acoplamento","L","Lubrificação","SM",26,16,2,"Parado","G2","CL-04"],["L","RD-04","Mancais cabeça e pé","Lubrificar mancais de rolamento (cabeça, pé e esticador)","L","Lubrificação","Q",2,1,0.5,"Parado","G1","CL-04"],["L","RD-04","Redutor","Verificar nível de óleo, ruído, temperatura e vazamentos","I","Lubrificação","S",1,1,0.25,"Operando","O1","CL-04"],["L","RD-04","Redutor","Trocar óleo do redutor (ou a cada 5.000 h / conforme análise)","L","Lubrificação","A",52,48,4,"Parado","O1","CL-04"],["L","RD-04","Acoplamento","Inspecionar e relubrificar acoplamento","L","Lubrificação","SM",26,20,2,"Parado","G2","CL-04"],["L","TC-01","Mancais dos tambores","Lubrificar mancais dos tambores (acionamento, retorno, esticador, desvio)","L","Lubrificação","Q",2,2,1,"Parado","G1","CL-05"],["L","TC-01","Redutor","Verificar nível de óleo, temperatura, ruído e vazamentos","I","Lubrificação","S",1,1,0.25,"Operando","O1 / O2","CL-05"],["L","TC-01","Redutor","Trocar óleo do redutor (ou a cada 5.000 h / conforme análise)","L","Lubrificação","A",52,50,4,"Parado","O1 / O2","CL-05"],["L","TC-01","Acoplamento","Inspecionar e relubrificar acoplamento","L","Lubrificação","SM",26,26,2,"Parado","G2","CL-05"],["L","EL-01","Mancais cabeça e pé","Lubrificar mancais da cabeça e do pé (pé com graxa H1)","L","Lubrificação","Q",2,2,0.5,"Parado","G1 / G3","CL-06"],["L","EL-01","Redutor e contra-recuo","Verificar nível de óleo, temperatura, ruído e atuação do contra-recuo","I","Lubrificação","S",1,1,0.25,"Operando","O2","CL-06"],["L","EL-01","Redutor","Coletar amostra de óleo para análise","D","Preditiva","T",13,11,0.5,"Operando","O2","CL-06"],["L","EL-01","Redutor","Trocar óleo do redutor (ou conforme análise)","L","Lubrificação","A",52,39,6,"Parado","O2","CL-06"],["L","EL-01","Acoplamento","Inspecionar e relubrificar acoplamento","L","Lubrificação","SM",26,19,2,"Parado","G2","CL-06"],["L","EL-04","Mancais cabeça e pé","Lubrificar mancais da cabeça e do pé (pé com graxa H1)","L","Lubrificação","Q",2,1,0.5,"Parado","G1 / G3","CL-06"],["L","EL-04","Redutor e contra-recuo","Verificar nível de óleo, temperatura, ruído e atuação do contra-recuo","I","Lubrificação","S",1,1,0.25,"Operando","O2","CL-06"],["L","EL-04","Redutor","Coletar amostra de óleo para análise","D","Preditiva","T",13,4,0.5,"Operando","O2","CL-06"],["L","EL-04","Redutor","Trocar óleo do redutor (ou conforme análise)","L","Lubrificação","A",52,43,6,"Parado","O2","CL-06"],["L","EL-04","Acoplamento","Inspecionar e relubrificar acoplamento","L","Lubrificação","SM",26,25,2,"Parado","G2","CL-06"],["L","TC-02","Mancais dos tambores","Lubrificar mancais dos tambores (acionamento, retorno, esticador, desvio)","L","Lubrificação","Q",2,1,1,"Parado","G1","CL-05"],["L","TC-02","Redutor","Verificar nível de óleo, temperatura, ruído e vazamentos","I","Lubrificação","S",1,1,0.25,"Operando","O1 / O2","CL-05"],["L","TC-02","Redutor","Trocar óleo do redutor (ou a cada 5.000 h / conforme análise)","L","Lubrificação","A",52,36,4,"Parado","O1 / O2","CL-05"],["L","TC-02","Acoplamento","Inspecionar e relubrificar acoplamento","L","Lubrificação","SM",26,12,2,"Parado","G2","CL-05"],["L","TC-02A","Mancais dos tambores","Lubrificar mancais dos tambores (acionamento, retorno, esticador, desvio)","L","Lubrificação","Q",2,2,1,"Parado","G1","CL-05"],["L","TC-02A","Redutor","Verificar nível de óleo, temperatura, ruído e vazamentos","I","Lubrificação","S",1,1,0.25,"Operando","O1 / O2","CL-05"],["L","TC-02A","Redutor","Trocar óleo do redutor (ou a cada 5.000 h / conforme análise)","L","Lubrificação","A",52,42,4,"Parado","O1 / O2","CL-05"],["L","TC-02A","Acoplamento","Inspecionar e relubrificar acoplamento","L","Lubrificação","SM",26,20,2,"Parado","G2","CL-05"],["L","TR-01","Rodas e trilhos","Lubrificar rodas/mancais de translação; limpar e inspecionar trilhos","L","Lubrificação","Q",2,1,1,"Parado","G4","CL-07"],["L","TR-01","Redutor de translação","Verificar nível de óleo e ruído","I","Lubrificação","M",4,4,0.25,"Operando","O1","CL-07"],["L","TR-01","Corrente de transmissão","Lubrificar e tensionar corrente de transmissão","L","Lubrificação","M",4,4,0.5,"Parado","O5","CL-07"],["L","TC-03","Mancais dos tambores","Lubrificar mancais dos tambores (acionamento, retorno, esticador, desvio)","L","Lubrificação","Q",2,2,1,"Parado","G1","CL-05"],["L","TC-03","Redutor","Verificar nível de óleo, temperatura, ruído e vazamentos","I","Lubrificação","S",1,1,0.25,"Operando","O1 / O2","CL-05"],["L","TC-03","Redutor","Trocar óleo do redutor (ou a cada 5.000 h / conforme análise)","L","Lubrificação","A",52,2,4,"Parado","O1 / O2","CL-05"],["L","TC-03","Acoplamento","Inspecionar e relubrificar acoplamento","L","Lubrificação","SM",26,26,2,"Parado","G2","CL-05"],["L","CG-01","Guias das comportas","Lubrificar guias e roletes das comportas","L","Lubrificação","B",8,4,2,"Parado","G3","CL-08"],["L","EL-02","Mancais cabeça e pé","Lubrificar mancais da cabeça e do pé (pé com graxa H1)","L","Lubrificação","Q",2,2,0.5,"Parado","G1 / G3","CL-06"],["L","EL-02","Redutor e contra-recuo","Verificar nível de óleo, temperatura, ruído e atuação do contra-recuo","I","Lubrificação","S",1,1,0.25,"Operando","O2","CL-06"],["L","EL-02","Redutor","Coletar amostra de óleo para análise","D","Preditiva","T",13,13,0.5,"Operando","O2","CL-06"],["L","EL-02","Redutor","Trocar óleo do redutor (ou conforme análise)","L","Lubrificação","A",52,47,6,"Parado","O2","CL-06"],["L","EL-02","Acoplamento","Inspecionar e relubrificar acoplamento","L","Lubrificação","SM",26,6,2,"Parado","G2","CL-06"],["L","VA-01","Mancais","Lubrificar mancais dos ventiladores de aeração","L","Lubrificação","M",4,1,1,"Parado","G1","CL-09"],["L","TC-05A","Mancais dos tambores","Lubrificar mancais dos tambores (acionamento, retorno, esticador, desvio)","L","Lubrificação","Q",2,1,1,"Parado","G1","CL-05"],["L","TC-05A","Redutor","Verificar nível de óleo, temperatura, ruído e vazamentos","I","Lubrificação","S",1,1,0.25,"Operando","O1 / O2","CL-05"],["L","TC-05A","Redutor","Trocar óleo do redutor (ou a cada 5.000 h / conforme análise)","L","Lubrificação","A",52,8,4,"Parado","O1 / O2","CL-05"],["L","TC-05A","Acoplamento","Inspecionar e relubrificar acoplamento","L","Lubrificação","SM",26,14,2,"Parado","G2","CL-05"],["L","TC-05","Mancais dos tambores","Lubrificar mancais dos tambores (acionamento, retorno, esticador, desvio)","L","Lubrificação","Q",2,2,1,"Parado","G1","CL-05"],["L","TC-05","Redutor","Verificar nível de óleo, temperatura, ruído e vazamentos","I","Lubrificação","S",1,1,0.25,"Operando","O1 / O2","CL-05"],["L","TC-05","Redutor","Trocar óleo do redutor (ou a cada 5.000 h / conforme análise)","L","Lubrificação","A",52,44,4,"Parado","O1 / O2","CL-05"],["L","TC-05","Acoplamento","Inspecionar e relubrificar acoplamento","L","Lubrificação","SM",26,22,2,"Parado","G2","CL-05"],["L","TR-02","Rodas e trilhos","Lubrificar rodas/mancais de translação; limpar e inspecionar trilhos","L","Lubrificação","Q",2,1,1,"Parado","G4","CL-07"],["L","TR-02","Redutor de translação","Verificar nível de óleo e ruído","I","Lubrificação","M",4,4,0.25,"Operando","O1","CL-07"],["L","TR-02","Corrente de transmissão","Lubrificar e tensionar corrente de transmissão","L","Lubrificação","M",4,2,0.5,"Parado","O5","CL-07"],["L","TC-06","Mancais dos tambores","Lubrificar mancais dos tambores (acionamento, retorno, esticador, desvio)","L","Lubrificação","Q",2,2,1,"Parado","G1","CL-05"],["L","TC-06","Redutor","Verificar nível de óleo, temperatura, ruído e vazamentos","I","Lubrificação","S",1,1,0.25,"Operando","O1 / O2","CL-05"],["L","TC-06","Redutor","Trocar óleo do redutor (ou a cada 5.000 h / conforme análise)","L","Lubrificação","A",52,1,4,"Parado","O1 / O2","CL-05"],["L","TC-06","Acoplamento","Inspecionar e relubrificar acoplamento","L","Lubrificação","SM",26,13,2,"Parado","G2","CL-05"],["L","CG-02","Guias das comportas","Lubrificar guias e roletes das comportas","L","Lubrificação","B",8,8,2,"Parado","G3","CL-08"],["L","EL-03","Mancais cabeça e pé","Lubrificar mancais da cabeça e do pé (pé com graxa H1)","L","Lubrificação","Q",2,2,0.5,"Parado","G1 / G3","CL-06"],["L","EL-03","Redutor e contra-recuo","Verificar nível de óleo, temperatura, ruído e atuação do contra-recuo","I","Lubrificação","S",1,1,0.25,"Operando","O2","CL-06"],["L","EL-03","Redutor","Coletar amostra de óleo para análise","D","Preditiva","T",13,10,0.5,"Operando","O2","CL-06"],["L","EL-03","Redutor","Trocar óleo do redutor (ou conforme análise)","L","Lubrificação","A",52,5,6,"Parado","O2","CL-06"],["L","EL-03","Acoplamento","Inspecionar e relubrificar acoplamento","L","Lubrificação","SM",26,17,2,"Parado","G2","CL-06"],["L","VA-02","Mancais","Lubrificar mancais dos ventiladores de aeração","L","Lubrificação","M",4,3,1,"Parado","G1","CL-09"],["L","TC-04-R","Mancais dos tambores","Lubrificar mancais dos tambores (acionamento, retorno, esticador, desvio)","L","Lubrificação","Q",2,1,1,"Parado","G1","CL-05"],["L","TC-04-R","Redutor","Verificar nível de óleo, temperatura, ruído e vazamentos","I","Lubrificação","S",1,1,0.25,"Operando","O1 / O2","CL-05"],["L","TC-04-R","Redutor","Trocar óleo do redutor (ou a cada 5.000 h / conforme análise)","L","Lubrificação","A",52,45,4,"Parado","O1 / O2","CL-05"],["L","TC-04-R","Acoplamento","Inspecionar e relubrificar acoplamento","L","Lubrificação","SM",26,21,2,"Parado","G2","CL-05"],["L","VD-01","Válvulas desviadoras/gavetas","Lubrificar eixos, mancais e cremalheiras","L","Lubrificação","M",4,1,1,"Parado","G1","CL-10"],["L","TC-08","Mancais dos tambores","Lubrificar mancais dos tambores (acionamento, retorno, esticador, desvio)","L","Lubrificação","Q",2,2,1,"Parado","G1","CL-05"],["L","TC-08","Redutor","Verificar nível de óleo, temperatura, ruído e vazamentos","I","Lubrificação","S",1,1,0.25,"Operando","O1 / O2","CL-05"],["L","TC-08","Redutor","Trocar óleo do redutor (ou a cada 5.000 h / conforme análise)","L","Lubrificação","A",52,38,4,"Parado","O1 / O2","CL-05"],["L","TC-08","Acoplamento","Inspecionar e relubrificar acoplamento","L","Lubrificação","SM",26,25,2,"Parado","G2","CL-05"],["L","EL-08","Mancais cabeça e pé","Lubrificar mancais da cabeça e do pé (pé com graxa H1)","L","Lubrificação","Q",2,2,0.5,"Parado","G1 / G3","CL-06"],["L","EL-08","Redutor e contra-recuo","Verificar nível de óleo, temperatura, ruído e atuação do contra-recuo","I","Lubrificação","S",1,1,0.25,"Operando","O2","CL-06"],["L","EL-08","Redutor","Coletar amostra de óleo para análise","D","Preditiva","T",13,11,0.5,"Operando","O2","CL-06"],["L","EL-08","Redutor","Trocar óleo do redutor (ou conforme análise)","L","Lubrificação","A",52,9,6,"Parado","O2","CL-06"],["L","EL-08","Acoplamento","Inspecionar e relubrificar acoplamento","L","Lubrificação","SM",26,24,2,"Parado","G2","CL-06"],["L","EL-09","Mancais cabeça e pé","Lubrificar mancais da cabeça e do pé (pé com graxa H1)","L","Lubrificação","Q",2,2,0.5,"Parado","G1 / G3","CL-06"],["L","EL-09","Redutor e contra-recuo","Verificar nível de óleo, temperatura, ruído e atuação do contra-recuo","I","Lubrificação","S",1,1,0.25,"Operando","O2","CL-06"],["L","EL-09","Redutor","Coletar amostra de óleo para análise","D","Preditiva","T",13,4,0.5,"Operando","O2","CL-06"],["L","EL-09","Redutor","Trocar óleo do redutor (ou conforme análise)","L","Lubrificação","A",52,37,6,"Parado","O2","CL-06"],["L","EL-09","Acoplamento","Inspecionar e relubrificar acoplamento","L","Lubrificação","SM",26,20,2,"Parado","G2","CL-06"],["L","TC-09","Mancais dos tambores","Lubrificar mancais dos tambores (acionamento, retorno, esticador, desvio)","L","Lubrificação","Q",2,1,2.5,"Parado","G1","CL-05"],["L","TC-09","Redutor","Verificar nível de óleo, temperatura, ruído e vazamentos","I","Lubrificação","S",1,1,0.62,"Operando","O1 / O2","CL-05"],["L","TC-09","Redutor","Trocar óleo do redutor (ou a cada 5.000 h / conforme análise)","L","Lubrificação","A",52,7,10,"Parado","O1 / O2","CL-05"],["L","TC-09","Acoplamento","Inspecionar e relubrificar acoplamento","L","Lubrificação","SM",26,1,5,"Parado","G2","CL-05"],["L","CT-10","Mancais dos tambores","Lubrificar mancais dos tambores (acionamento, retorno, esticador, desvio)","L","Lubrificação","Q",2,2,1.5,"Parado","G1","CL-05"],["L","CT-10","Redutor","Verificar nível de óleo, temperatura, ruído e vazamentos","I","Lubrificação","S",1,1,0.38,"Operando","O1 / O2","CL-05"],["L","CT-10","Redutor","Trocar óleo do redutor (ou a cada 5.000 h / conforme análise)","L","Lubrificação","A",52,41,6,"Parado","O1 / O2","CL-05"],["L","CT-10","Acoplamento","Inspecionar e relubrificar acoplamento","L","Lubrificação","SM",26,19,3,"Parado","G2","CL-05"],["L","CT-11","Mancais dos tambores","Lubrificar mancais dos tambores (acionamento, retorno, esticador, desvio)","L","Lubrificação","Q",2,2,1.5,"Parado","G1","CL-05"],["L","CT-11","Redutor","Verificar nível de óleo, temperatura, ruído e vazamentos","I","Lubrificação","S",1,1,0.38,"Operando","O1 / O2","CL-05"],["L","CT-11","Redutor","Trocar óleo do redutor (ou a cada 5.000 h / conforme análise)","L","Lubrificação","A",52,49,6,"Parado","O1 / O2","CL-05"],["L","CT-11","Acoplamento","Inspecionar e relubrificar acoplamento","L","Lubrificação","SM",26,25,3,"Parado","G2","CL-05"],["L","CT-12","Mancais dos tambores","Lubrificar mancais dos tambores (acionamento, retorno, esticador, desvio)","L","Lubrificação","Q",2,1,1,"Parado","G1","CL-05"],["L","CT-12","Redutor","Verificar nível de óleo, temperatura, ruído e vazamentos","I","Lubrificação","S",1,1,0.25,"Operando","O1 / O2","CL-05"],["L","CT-12","Redutor","Trocar óleo do redutor (ou a cada 5.000 h / conforme análise)","L","Lubrificação","A",52,5,4,"Parado","O1 / O2","CL-05"],["L","CT-12","Acoplamento","Inspecionar e relubrificar acoplamento","L","Lubrificação","SM",26,26,2,"Parado","G2","CL-05"],["L","CT-13","Mancais dos tambores","Lubrificar mancais dos tambores (acionamento, retorno, esticador, desvio)","L","Lubrificação","Q",2,1,1.5,"Parado","G1","CL-05"],["L","CT-13","Redutor","Verificar nível de óleo, temperatura, ruído e vazamentos","I","Lubrificação","S",1,1,0.38,"Operando","O1 / O2","CL-05"],["L","CT-13","Redutor","Trocar óleo do redutor (ou a cada 5.000 h / conforme análise)","L","Lubrificação","A",52,4,6,"Parado","O1 / O2","CL-05"],["L","CT-13","Acoplamento","Inspecionar e relubrificar acoplamento","L","Lubrificação","SM",26,2,3,"Parado","G2","CL-05"],["L","FM-01","Ventilador do filtro","Lubrificar mancais do ventilador","L","Lubrificação","M",4,2,0.25,"Operando","G1","CL-11"],["L","FM-01","Válvula rotativa","Lubrificar mancais e corrente da válvula rotativa","L","Lubrificação","M",4,4,0.25,"Parado","G1 / O5","CL-11"],["L","CP-01","Compressor","Trocar óleo, filtro de óleo e separador (ou por horímetro)","L","Lubrificação","SM",26,6,3,"Parado","O4","CL-12"],["L","CP-01","Motor do compressor","Relubrificar mancais do motor (se não blindado)","L","Lubrificação","T",13,13,0.25,"Operando","G1","CL-12"],["L","GE-01","Motor diesel","Trocar óleo, filtros de óleo/combustível/ar (ou por horímetro)","L","Lubrificação","A",52,9,3,"Parado","O6","CL-13"],["L","MT-01","Motores c/ graxeira","Relubrificar rolamentos dos motores (intervalo/quantidade da placa)","L","Lubrificação","M",4,2,2,"Operando","G1","CL-14"]],"e":[["TB-01","Tombador hidráulico de caminhões (ao lado da moega) → RD-01","Recepção","tombador"],["MG-01","Moega de recepção (grelhas, comportas e fosso)","Recepção","moega"],["BR-01","Balança rodoviária","Recepção","balanca"],["BRF-01","Balança ferroviária","Recepção","balanca"],["AM-01","Amostrador/calador de caminhões","Recepção","amostrador"],["RD-01","Redler nº 1 – recebe do tombador TB-01 → EL-01","Recepção","redler"],["RD-02","Redler da moega nº 2 → TC-01","Recepção","redler"],["RD-03","Redler da moega nº 3 → TC-01","Recepção","redler"],["RD-04","Redler da moega → EL-04","Recepção","redler"],["TC-01","Correia transportadora moega → EL-01","Recepção","correia"],["EL-01","Elevador de canecas – torre 1 (recebe TC-01)","Recepção","elevador"],["EL-04","Elevador de canecas – torre 2 (recebe RD-04)","Recepção","elevador"],["TC-02","Correia EL-01 → galeria superior do Armazém 1 (carga)","Armazém 1","correia"],["TC-02A","Correia EL-04 → Armazém 1","Armazém 1","correia"],["TR-01","Carro distribuidor (tripper) da TC-02","Armazém 1","tripper"],["TC-03","Correia do túnel inferior do Armazém 1 (descarga) → EL-02","Armazém 1","correia"],["CG-01","Comportas de descarga do túnel do Armazém 1","Armazém 1","comporta"],["EL-02","Elevador de canecas do Armazém 1","Armazém 1","elevador"],["VA-01","Ventiladores de aeração do Armazém 1","Armazém 1","ventilador"],["TM-01","Termometria do Armazém 1","Armazém 1","termometria"],["ARM-01","Armazém 1 fundo plano – estrutura, cobertura, galeria e túnel","Armazém 1","armazem"],["TC-05A","Correia EL-04 → galeria superior do Armazém 2","Armazém 2","correia"],["TC-05","Correia da galeria superior do Armazém 2 (carga)","Armazém 2","correia"],["TR-02","Carro distribuidor (tripper) da TC-05","Armazém 2","tripper"],["TC-06","Correia do túnel inferior do Armazém 2 (descarga) → EL-03","Armazém 2","correia"],["CG-02","Comportas de descarga do túnel do Armazém 2","Armazém 2","comporta"],["EL-03","Elevador de canecas do Armazém 2","Armazém 2","elevador"],["VA-02","Ventiladores de aeração do Armazém 2","Armazém 2","ventilador"],["TM-02","Termometria do Armazém 2","Armazém 2","termometria"],["ARM-02","Armazém 2 fundo plano – estrutura, cobertura, galeria e túnel","Armazém 2","armazem"],["TC-04-R","Correia reversível de interligação EL-02 ↔ EL-03","Transporte","correia"],["VD-01","Válvulas desviadoras / gavetas dos elevadores","Transporte","valvula"],["TC-08","Correia EL-02 → poço dos elevadores de expedição","Expedição","correia"],["EL-08","Elevador de canecas de expedição nº 1 (poço do elevador)","Expedição","elevador"],["EL-09","Elevador de canecas de expedição nº 2 (poço do elevador)","Expedição","elevador"],["BF-01","Balança de fluxo de expedição","Expedição","balancafluxo"],["TC-09","Correia de expedição BF-01 → torre T-01 (≈ 353 m)","Expedição","correia"],["T-01","Torre de transferência T-01","Expedição","torre"],["CT-10","Correia de expedição T-01 → T-02","Expedição","correia"],["T-02","Torre de transferência T-02","Expedição","torre"],["CT-11","Correia de expedição T-02 → T-03","Expedição","correia"],["T-03","Torre de transferência T-03","Expedição","torre"],["CT-12","Correia de expedição T-03 → T-04 (≈ 61,5 m)","Expedição","correia"],["T-04","Torre de transferência T-04","Expedição","torre"],["CT-13","Correia de expedição T-04 → cais / corredor de exportação (≈ 145,5 m)","Expedição","correia"],["FM-01","Sistema de despoeiramento (filtros de mangas)","Despoeiramento","filtro"],["CP-01","Compressor de ar (comportas pneumáticas) + secador","Utilidades","compressor"],["RA-01","Reservatório de ar comprimido (NR-13)","Utilidades","vaso"],["GE-01","Grupo gerador diesel","Utilidades","gerador"],["TL-01","Talhas e monovias de manutenção (torres/oficina)","Utilidades","talha"],["SE-01","Casa de força – subestação e transformadores","Elétrica","subestacao"],["CCM-01","Painéis, CCMs e inversores (casa de força / casa de máquinas)","Elétrica","ccm"],["MT-01","Motores elétricos de acionamento (todos)","Elétrica","motores"],["SPDA-01","SPDA e malha de aterramento","Elétrica","spda"],["IL-01","Iluminação interna, externa e de emergência","Elétrica","iluminacao"],["CLP-01","CLP, supervisório (sala de controle) e rede","Automação","clp"],["SEG-01","Dispositivos de segurança dos transportadores","Automação","seguranca"],["INC-01","Combate a incêndio – casa de bombas, cisterna, hidrantes, extintores","Segurança","incendio"],["PRD-01","Edificações de apoio, pátio e drenagem","Predial","predial"]]};
+/* t: [plano, tag, componente, atividade, simb, especialidade, freq, intervalo, semIni, HH, condicao, lub, checklist] */
+const TASKS = DATA.t.map((r,i)=>({i,plan:r[0],tag:r[1],comp:r[2],ativ:r[3],sym:r[4],esp:r[5],fq:r[6],iv:r[7],st:r[8],hh:r[9],cond:r[10],lub:r[11],ck:r[12]}));
+const EQ = {}; DATA.e.forEach(([t,d,s,c])=>EQ[t]={tag:t,desc:d,sis:s,cls:c});
+const BYTAG = {}; TASKS.forEach(t=>(BYTAG[t.tag]=BYTAG[t.tag]||[]).push(t));
+const FQ={S:'Semanal',Q:'Quinzenal',M:'Mensal',B:'Bimestral',T:'Trimestral',SM:'Semestral',A:'Anual'};
+const TIPO={L:'Lubrificação',I:'Inspeção',P:'Preventiva',D:'Preditiva',N:'Legal/NR'};
+const MIN=6e4,HOUR=36e5,DAY=864e5,WEEK=7*DAY;
+const ANCHOR=new Date(2027,0,4,0,0,0).getTime();
+const mod=(a,n)=>((a%n)+n)%n;
+const wkIdx=t=>Math.floor((t-ANCHOR)/WEEK);
+const planWeek=k=>mod(k,52)+1;
+const wkStart=k=>ANCHOR+k*WEEK;
+const due=(t,w)=>w>=t.st && (w-t.st)%t.iv===0;
+const DIAS=['Seg','Ter','Qua','Qui','Sex','Sáb','Dom'];
+
+/* ---------- state ---------- */
+let sim=Date.now(), speed=3600, running=true, sel=null, filter='all', tab='prog';
+let OS=[], seq=1, lastK=null, EV=[], ver=0;
+let rng=1234567; const rnd=()=>{rng=(rng*1103515245+12345)%2147483648;return rng/2147483648;};
+const fmt=t=>new Date(t).toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
+const fmtS=t=>new Date(t).toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'});
+function ev(t,txt,kind){EV.unshift({t,txt,kind});if(EV.length>300)EV.pop();}
+
+function gen(k){
+  const w=planWeek(k), ws=wkStart(k); let n=0,nl=0;
+  TASKS.forEach(t=>{ if(!due(t,w)) return;
+    const day=(t.i*7+w*3)%5, h=7+((t.i*5)%8);
+    const dur=Math.max(.25,Math.min(t.hh>8?t.hh/3:t.hh,24));
+    const sch=ws+day*DAY+h*HOUR, dl=ws+(t.hh>8?4:day)*DAY+17*HOUR;
+    OS.push({id:'OS-'+String(26000+seq++).padStart(6,'0'),t,k,w,day,sch,dl,dur,st:'prog',skip:rnd()<0.07,start:null,end:null});
+    t.plan==='L'?nl++:n++;
+  });
+  ev(ws,`Plano gerou automaticamente ${n} OS de manutenção e ${nl} OS de lubrificação – semana ${w}/52`,'gen');
+}
+const CAP={M:5,L:2};
+function step(now){
+  const k=wkIdx(now);
+  if(lastK===null) lastK=k-1;
+  while(lastK<k){ lastK++; gen(lastK); }
+  const d=new Date(now), wd=(d.getDay()+6)%7, hr=d.getHours();
+  const work=wd<5 && hr>=7 && hr<17;
+  // finish
+  for(const o of OS){ if(o.st==='exe' && now>=o.end){ o.st='con'; o.fin=now; ev(now,`${o.id} concluída – ${o.t.tag} · ${o.t.ativ.slice(0,60)} (checklist ${o.t.ck})`,'con'); ver++; } }
+  // overdue
+  for(const o of OS){ if(o.st==='prog' && now>o.dl){ o.st='atr'; ev(o.dl,`${o.id} ATRASADA – ${o.t.tag} · ${o.t.ativ.slice(0,60)}`,'atr'); ver++; } }
+  if(wd===0 && hr===7){ OS.forEach(o=>{ if(o.st==='atr' && o.skip && now-o.dl>DAY){ o.skip=false; } }); }
+  if(!work) return;
+  for(const p of ['M','L']){
+    let busy=OS.filter(o=>o.st==='exe'&&o.t.plan===p).length;
+    if(busy>=CAP[p]) continue;
+    const cand=OS.filter(o=>o.t.plan===p && !o.skip && (o.st==='atr'||(o.st==='prog'&&o.sch<=now))).sort((a,b)=>(a.st==='atr'?0:1)-(b.st==='atr'?0:1)||a.sch-b.sch);
+    for(const o of cand){ if(busy>=CAP[p]) break; o.st='exe'; o.start=now; o.end=now+o.dur*HOUR; busy++; ver++;
+      ev(now,`${o.id} iniciada – ${o.t.tag} · ${o.t.ativ.slice(0,60)}`,'ini'); }
+  }
+}
+function advance(to){ const STEP=5*MIN; while(sim<to){ sim=Math.min(to,sim+STEP); step(sim); } }
+
+/* ---------- status ---------- */
+function curK(){return wkIdx(sim);}
+function tagStatus(tag){
+  const os=OS.filter(o=>o.t.tag===tag && o.st!=='con');
+  const r={code:'ok',lub:false,stop:false};
+  if(!os.length) return r;
+  const today=new Date(sim); today.setHours(0,0,0,0); const t0=today.getTime();
+  if(os.some(o=>o.st==='exe')){ r.code='exe'; r.stop=os.some(o=>o.st==='exe'&&o.t.cond==='Parado'); }
+  else if(os.some(o=>o.st==='atr')) r.code='atr';
+  else if(os.some(o=>o.sch>=t0&&o.sch<t0+DAY)) r.code='hoje';
+  else if(os.some(o=>o.k===curK())) r.code='sem';
+  r.lub=os.some(o=>o.t.plan==='L');
+  return r;
+}
+const COL={ok:'var(--ok)',sem:'var(--sem)',hoje:'var(--hoje)',exe:'var(--exe)',atr:'var(--atr)'};
+const STXT={ok:'Em dia',sem:'OS programada na semana',hoje:'OS programada hoje',exe:'Em execução',atr:'OS atrasada'};
+const OSTXT={prog:['Programada','p-sem'],exe:['Em execução','p-exe'],atr:['Atrasada','p-atr'],con:['Concluída','p-con']};
+
+/* ---------- synoptic ---------- */
+const S=[]; // shapes
+const box=(tag,x,y,w,h,l1,l2,o={})=>S.push({k:'box',tag,x,y,w,h,l1,l2,...o});
+const conv=(tag,d,lx,ly,o={})=>S.push({k:'conv',tag,d,lx,ly,...o});
+// recepção
+box('BR-01',20,70,70,34,'BR-01','Bal. rodov.');
+box('BRF-01',96,70,70,34,'BRF-01','Bal. ferrov.');
+box('AM-01',172,70,70,34,'AM-01','Amostrador');
+box('TB-01',20,130,130,56,'TB-01','Tombador',{icon:'truck'});
+S.push({k:'hopper',tag:'MG-01',pts:'20,220 150,220 122,292 48,292',l1:'MG-01',l2:'Moega',lx:85,ly:250});
+conv('RD-01','M150 158 H280',214,151);
+conv('RD-02','M150 234 H198',166,229);
+conv('RD-03','M150 258 H198',166,272);
+conv('TC-01','M200 234 V258 M200 246 H280',240,240);
+conv('RD-04','M85 292 V420 H280',150,414);
+box('EL-01',280,110,30,160,'EL-01','',{vert:true});
+box('EL-04',280,330,30,160,'EL-04','',{vert:true});
+// armazém 1
+S.push({k:'arm',tag:'ARM-01',d:'M380 270 V150 Q570 70 760 150 V270 Z',l1:'ARMAZÉM 1',lx:570,ly:184});
+conv('TC-02','M310 116 H352 L390 150 H750',560,143);
+conv('TC-02A','M310 336 H336 V168 H392',340,190,{lv:true});
+conv('TC-03','M392 256 H800',560,250);
+S.push({k:'gates',tag:'CG-01',x:420,y:262,n:6,step:62});
+S.push({k:'trip',tag:'TR-01',y:150,x0:405,x1:715});
+S.push({k:'fans',tag:'VA-01',xs:[402,738],y:224});
+box('TM-01',548,204,44,18,'TM-01','',{small:true});
+// armazém 2
+S.push({k:'arm',tag:'ARM-02',d:'M380 512 V392 Q570 312 760 392 V512 Z',l1:'ARMAZÉM 2',lx:570,ly:426});
+conv('TC-05A','M310 348 H356 L390 392',360,370,{lv:false});
+conv('TC-05','M390 392 H750',560,385);
+conv('TC-06','M392 498 H800',560,492);
+S.push({k:'gates',tag:'CG-02',x:420,y:504,n:6,step:62});
+S.push({k:'trip',tag:'TR-02',y:392,x0:405,x1:715});
+S.push({k:'fans',tag:'VA-02',xs:[402,738],y:466});
+box('TM-02',548,446,44,18,'TM-02','',{small:true});
+box('EL-02',800,110,30,160,'EL-02','',{vert:true});
+box('EL-03',800,352,30,160,'EL-03','',{vert:true});
+conv('TC-04-R','M815 270 V352',822,316,{rev:true});
+box('VD-01',760,290,34,22,'VD-01','',{small:true});
+// expedição
+conv('TC-08','M830 118 H862 V254 H952',866,190);
+box('EL-08',900,96,26,150,'EL-08','',{vert:true});
+box('EL-09',940,96,26,150,'EL-09','',{vert:true});
+S.push({k:'link',d:'M913 96 V82 H990 M953 96 V82'});
+box('BF-01',990,58,72,46,'BF-01','Bal. fluxo');
+conv('TC-09','M1062 82 H1108 L1140 170',1092,74);
+box('T-01',1128,170,30,30,'T-01','',{tower:true});
+conv('CT-10','M1158 186 H1178 L1200 260',1196,214);
+box('T-02',1188,260,30,30,'T-02','',{tower:true});
+conv('CT-11','M1218 276 L1250 350',1246,306);
+box('T-03',1240,350,30,30,'T-03','',{tower:true});
+conv('CT-12','M1255 380 V440',1262,414);
+box('T-04',1240,440,30,30,'T-04','',{tower:true});
+conv('CT-13','M1270 456 H1334 V546',1300,448);
+S.push({k:'ship',x:1268,y:548});
+box('FM-01',900,290,72,34,'FM-01','Despoeiram.');
+// utilidades
+['SE-01','CCM-01','MT-01','GE-01','CP-01','RA-01','CLP-01','SEG-01','INC-01','SPDA-01','IL-01','TL-01','PRD-01'].forEach((t,i)=>{
+  const nm={'SE-01':'Subestação','CCM-01':'Painéis/CCM','MT-01':'Motores','GE-01':'Gerador','CP-01':'Compressor','RA-01':'Vaso NR-13','CLP-01':'CLP/rede','SEG-01':'Seg. transp.','INC-01':'Incêndio','SPDA-01':'SPDA','IL-01':'Iluminação','TL-01':'Talhas','PRD-01':'Predial'}[t];
+  box(t,20+i*88,600,82,40,t,nm);
+});
+
+function buildSVG(){
+  const g=[];
+  g.push(`<svg viewBox="0 0 1400 660" role="img" aria-label="Sinótico do terminal Cimbessul" id="syn">
+  <defs><marker id="ar" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#9fb0c3"/></marker>
+  <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M20 0H0V20" fill="none" stroke="#141c26" stroke-width="1"/></pattern></defs>
+  <rect width="1400" height="660" fill="url(#grid)" pointer-events="none"/>
+  <text class="sec" x="20" y="40">RECEPÇÃO</text><text class="sec" x="380" y="40">ARMAZENAGEM</text><text class="sec" x="880" y="40">EXPEDIÇÃO</text><text class="sec" x="20" y="588">UTILIDADES E INFRAESTRUTURA</text>
+  <line x1="350" y1="30" x2="350" y2="560" stroke="#18222e"/><line x1="860" y1="30" x2="860" y2="560" stroke="#18222e"/><line x1="10" y1="568" x2="1250" y2="568" stroke="#18222e"/>`);
+  for(const s of S){
+    if(s.k==='link'){ g.push(`<path d="${s.d}" fill="none" stroke="#3a4a5d" stroke-width="2.5"/>`); continue; }
+    if(s.k==='ship'){ g.push(`<g><path d="M${s.x} ${s.y+20} H${s.x+122} L${s.x+108} ${s.y+46} H${s.x+12} Z" fill="#1a2533" stroke="#3a4a5d"/><rect x="${s.x+70}" y="${s.y+4}" width="26" height="16" fill="#1a2533" stroke="#3a4a5d"/><text class="lbls" x="${s.x+61}" y="${s.y+38}" text-anchor="middle">NAVIO · BERÇO</text><path d="M${s.x-10} ${s.y+56} q15 -6 30 0 t30 0 t30 0 t30 0 t30 0" fill="none" stroke="#1f3b52" stroke-width="2"/></g>`); continue; }
+    const id=`id="e-${s.tag}" data-tag="${s.tag}"`;
+    if(s.k==='conv'){
+      g.push(`<g class="eq conv" ${id}><path class="hit" d="${s.d}"/><path class="belt body" d="${s.d}" ${s.rev?'marker-start="url(#ar)" marker-end="url(#ar)"':''}/><path class="flow" d="${s.d}"/>
+      <text class="lbl" x="${s.lx}" y="${s.ly}" ${s.lv?`transform="rotate(-90 ${s.lx} ${s.ly})" text-anchor="middle"`:''}>${s.tag}</text></g>`);
+    } else if(s.k==='box'){
+      let inner='';
+      if(s.vert) inner=`<text class="lbl" x="${s.x+s.w/2}" y="${s.y+s.h/2}" transform="rotate(-90 ${s.x+s.w/2} ${s.y+s.h/2})" text-anchor="middle" dy="4">${s.l1}</text><rect x="${s.x+5}" y="${s.y+8}" width="${s.w-10}" height="6" fill="#0b1118" opacity=".5"/>`;
+      else if(s.small) inner=`<text class="lbl" x="${s.x+s.w/2}" y="${s.y+s.h/2+4}" text-anchor="middle">${s.l1}</text>`;
+      else if(s.tower) inner=`<path d="M${s.x+6} ${s.y+s.h} L${s.x+s.w/2} ${s.y+6} L${s.x+s.w-6} ${s.y+s.h}" fill="none" stroke="#0b1118" stroke-width="1.5" opacity=".6"/><text class="lbl" x="${s.x+s.w+5}" y="${s.y+12}">${s.l1}</text>`;
+      else inner=`<text class="lbl" x="${s.x+8}" y="${s.y+15}">${s.l1}</text><text class="lbls" x="${s.x+8}" y="${s.y+28}">${s.l2||''}</text>`+(s.icon==='truck'?`<g transform="translate(${s.x+76} ${s.y+14}) rotate(-14)" opacity=".7"><rect width="34" height="16" fill="#0b1118"/><rect x="34" y="5" width="12" height="11" fill="#0b1118"/><circle cx="8" cy="19" r="3.5" fill="#0b1118"/><circle cx="38" cy="19" r="3.5" fill="#0b1118"/></g>`:'');
+      g.push(`<g class="eq" ${id}><rect class="body" x="${s.x}" y="${s.y}" width="${s.w}" height="${s.h}" rx="${s.vert||s.tower?3:6}" fill-opacity=".22"/>${inner}<circle class="ld" cx="${s.x+s.w-(s.vert?s.w/2:7)}" cy="${s.y+(s.vert?-7:7)}" r="4" fill="var(--lub)" style="display:none"/></g>`);
+    } else if(s.k==='hopper'){
+      g.push(`<g class="eq" ${id}><polygon class="body" points="${s.pts}" fill-opacity=".22"/><text class="lbl" x="${s.lx}" y="${s.ly}" text-anchor="middle">${s.l1}</text><text class="lbls" x="${s.lx}" y="${s.ly+13}" text-anchor="middle">${s.l2}</text><circle class="ld" cx="140" cy="228" r="4" fill="var(--lub)" style="display:none"/></g>`);
+    } else if(s.k==='arm'){
+      g.push(`<g class="eq" ${id}><path class="body" d="${s.d}" fill-opacity=".07"/><text class="sec" x="${s.lx}" y="${s.ly}" text-anchor="middle" style="fill:#8a99ab">${s.l1}</text><text class="lbls" x="${s.lx}" y="${s.ly+14}" text-anchor="middle">${s.tag}</text></g>`);
+    } else if(s.k==='gates'){
+      let m=''; for(let i=0;i<s.n;i++){const x=s.x+i*s.step; m+=`<path d="M${x-7} ${s.y-14} L${x+7} ${s.y-14} L${x} ${s.y-6}Z"/>`;}
+      g.push(`<g class="eq" ${id}><rect x="${s.x-14}" y="${s.y-20}" width="${(s.n-1)*s.step+28}" height="18" fill="transparent"/><g class="body" fill-opacity=".9" stroke-width="1">${m}</g><text class="lbl" x="${s.x+(s.n-1)*s.step/2}" y="${s.y+12}" text-anchor="middle">${s.tag}</text><circle class="ld" cx="${s.x-12}" cy="${s.y-20}" r="4" fill="var(--lub)" style="display:none"/></g>`);
+    } else if(s.k==='trip'){
+      g.push(`<g class="eq" ${id}><g id="tp-${s.tag}"><rect class="body" x="-15" y="${s.y-12}" width="30" height="12" rx="2" fill-opacity=".9"/><text class="lbl" x="0" y="${s.y-16}" text-anchor="middle">${s.tag}</text><circle class="ld" cx="15" cy="${s.y-12}" r="4" fill="var(--lub)" style="display:none"/></g></g>`);
+    } else if(s.k==='fans'){
+      let m=''; s.xs.forEach(x=>m+=`<circle cx="${x}" cy="${s.y}" r="11" fill-opacity=".22"/><g class="fan" style="transform-origin:${x}px ${s.y}px"><path d="M${x} ${s.y} l0 -9 a4 4 0 0 1 4 4z M${x} ${s.y} l9 0 a4 4 0 0 1 -4 4z M${x} ${s.y} l0 9 a4 4 0 0 1 -4 -4z M${x} ${s.y} l-9 0 a4 4 0 0 1 4 -4z" stroke="none"/></g>`);
+      g.push(`<g class="eq" ${id}><g class="body">${m}</g><text class="lbl" x="${s.xs[0]+16}" y="${s.y+4}">${s.tag}</text><circle class="ld" cx="${s.xs[1]+12}" cy="${s.y-12}" r="4" fill="var(--lub)" style="display:none"/></g>`);
+    }
+  }
+  g.push(`</svg>`);
+  document.getElementById('synwrap').innerHTML=g.join('');
+  document.querySelectorAll('#syn .eq').forEach(el=>{
+    el.addEventListener('click',()=>{select(el.dataset.tag)});
+    el.addEventListener('mousemove',e=>showTip(e,el.dataset.tag));
+    el.addEventListener('mouseleave',()=>tip.style.display='none');
+  });
+}
+const tip=document.getElementById('tip');
+function showTip(e,tag){const q=EQ[tag]||{desc:''},s=tagStatus(tag);tip.innerHTML=`<b class="mono" style="color:var(--yel)">${tag}</b> · ${q.desc}<br><span style="color:${COL[s.code]}">● ${STXT[s.code]}</span>${s.lub?' · <span style="color:var(--lub)">lubrificação pendente</span>':''}`;tip.style.display='block';tip.style.left=Math.min(e.clientX+14,innerWidth-300)+'px';tip.style.top=(e.clientY+14)+'px';}
+
+function paintSVG(){
+  for(const tag in EQ){
+    const el=document.getElementById('e-'+tag); if(!el) continue;
+    const s=tagStatus(tag), c=COL[s.code];
+    el.querySelectorAll('.body').forEach(b=>{ if(el.classList.contains('conv')) b.style.stroke=c; else {b.style.stroke=c;b.style.fill=c;} });
+    el.classList.toggle('sel',sel===tag);
+    el.classList.toggle('stop',s.stop);
+    el.querySelectorAll('.ld').forEach(d=>d.style.display=s.lub?'':'none');
+    el.querySelectorAll('.body').forEach(b=>b.classList.toggle('blink',s.code==='atr'));
+  }
+  // tripper motion
+  const ph=(sim/HOUR)%6/6;
+  [['TR-01',405,715],['TR-02',405,715]].forEach(([t,a,b],i)=>{const g=document.getElementById('tp-'+t); if(!g)return; const st=tagStatus(t); const p=st.stop?.5:(Math.sin((ph+i*.37)*2*Math.PI)+1)/2; g.setAttribute('transform',`translate(${a+(b-a)*p} 0)`);});
+  document.querySelectorAll('.fan').forEach((f,i)=>{f.style.transform=`rotate(${(sim/MIN*6+i*40)%360}deg)`;});
+}
+
+
+/* ================= mobile UI ================= */
+let view='painel', of='hoje', zoom=0.62;
+const $=id=>document.getElementById(id);
+function osItem(o){const [s,c]=OSTXT[o.st];return `<div class="item" data-tag="${o.t.tag}"><span class="tg">${o.t.tag}</span><div class="tx">${o.t.ativ}<div class="mt">${DIAS[o.day]} ${fmtS(o.sch)} · <span class="pill p-${o.t.plan}">${o.t.plan==='L'?'Lubrificação':TIPO[o.t.sym]}</span> <span class="pill ${c}">${s}</span> · ${o.t.ck}</div></div></div>`;}
+function osCard(o){
+  const [s,c]=OSTXT[o.st];
+  const act=o.st==='prog'||o.st==='atr'?`<button class="btn" data-a="ini" data-o="${o.id}">Iniciar</button><button class="btn y" data-a="con" data-o="${o.id}">Concluir</button>`:o.st==='exe'?`<button class="btn y" data-a="con" data-o="${o.id}">Concluir</button><span class="meta">término ${fmtS(o.end)}</span>`:`<span class="meta">concluída ${fmtS(o.fin)}</span>`;
+  return `<div class="os"><div class="r1"><span class="mono">${o.id}</span><span class="pill p-${o.t.plan}">${o.t.plan==='L'?'Lubrificação':TIPO[o.t.sym]}</span><span class="pill ${c}">${s}</span><span style="margin-left:auto">${DIAS[o.day]} ${fmtS(o.sch).slice(0,5)}</span></div><div class="r2">${o.t.ativ}</div><div class="meta">${o.t.comp} · ${o.t.esp} · ${o.t.hh} HH · ${o.t.cond}${o.t.lub?' · '+o.t.lub:''} · checklist <b>${o.t.ck}</b></div><div class="r3">${act}</div></div>`;
+}
+function nextWeek(t){const w=planWeek(curK());for(let d=1;d<=52;d++){const x=mod(w-1+d,52)+1;if(due(t,x))return x;}return '-';}
+function sheet(){
+  const sh=$('sheet');
+  if(!sel){sh.classList.remove('on');$('bk').classList.remove('on');return;}
+  const q=EQ[sel], s=tagStatus(sel), k=curK();
+  const os=OS.filter(o=>o.t.tag===sel&&(o.k===k||o.st!=='con')).sort((a,b)=>a.sch-b.sch);
+  const plan=(BYTAG[sel]||[]).slice().sort((a,b)=>a.plan.localeCompare(b.plan)||a.iv-b.iv);
+  sh.innerHTML=`<div class="grab"></div><div class="tagh"><span class="t">${sel}</span><span class="pill p-${s.code}">${STXT[s.code]}</span><button class="ib x" id="x">Fechar</button></div>
+  <div class="desc">${q.desc}</div><div class="meta">${q.sis}${s.stop?' · <b style="color:var(--exe)">PARADO PARA MANUTENÇÃO</b>':''}</div>
+  <h2>OS da semana e pendências (${os.length})</h2>${os.length?os.map(osCard).join(''):'<div class="empty">Nenhuma OS para esta TAG na semana.</div>'}
+  <h2>Plano da TAG (${plan.length})</h2><table class="plan">${plan.map(t=>`<tr><td><span class="pill p-${t.plan}">${t.plan==='L'?'LUB':'MAN'}</span></td><td>${t.ativ}<div class="meta">${FQ[t.fq]} · ${t.ck}</div></td><td>sem. ${nextWeek(t)}</td></tr>`).join('')}</table>`;
+  sh.classList.add('on');$('bk').classList.add('on');
+  $('x').onclick=()=>select(null);
+}
+function painel(){
+  const k=curK(), wk=OS.filter(o=>o.k===k);
+  const ad=p=>{const d=wk.filter(o=>o.t.plan===p&&o.dl<=sim);const c=d.filter(o=>o.st==='con').length;return d.length?[Math.round(c/d.length*100),c,d.length]:[null,0,0];};
+  const am=ad('M'),al=ad('L'),open=wk.filter(o=>o.st==='prog'||o.st==='exe').length,atr=OS.filter(o=>o.st==='atr').length;
+  const hhP=wk.reduce((a,o)=>a+o.t.hh,0),hhE=wk.filter(o=>o.st==='con').reduce((a,o)=>a+o.t.hh,0);
+  const tags=Object.keys(EQ),sts=tags.map(t=>tagStatus(t)),stopped=sts.filter(s=>s.stop).length,disp=(tags.length-stopped)/tags.length*100;
+  const cc=v=>v==null?'var(--mu)':v>=85?'var(--ok)':v>=70?'var(--sem)':'var(--atr)';
+  const card=(l,v,s,pct,col)=>`<div class="kpi"><div class="l">${l}</div><div class="v" style="color:${col}">${v}</div><div class="s">${s}</div>${pct!=null?`<div class="bar" style="width:${pct}%;background:${col}"></div>`:''}</div>`;
+  $('kpis').innerHTML=card('Aderência manut.',am[0]==null?'—':am[0]+'%',`${am[1]}/${am[2]} OS vencidas`,am[0],cc(am[0]))+card('Aderência lubrif.',al[0]==null?'—':al[0]+'%',`${al[1]}/${al[2]} rotas vencidas`,al[0],cc(al[0]))+
+    card('OS abertas',open,`${wk.length} geradas na semana`,null,'var(--sem)')+card('Atrasadas',atr,'backlog total',null,atr?'var(--atr)':'var(--ok)')+
+    card('HH semana',`${hhE.toFixed(0)}<span style="font-size:13px;color:var(--mu)">/${hhP.toFixed(0)}</span>`,'executado / programado',hhP?hhE/hhP*100:0,'var(--exe)')+card('Disponibilidade',disp.toFixed(1)+'%',`${stopped} parado(s)`,disp,disp>=97?'var(--ok)':'var(--sem)');
+  const cnt={ok:0,sem:0,hoje:0,exe:0,atr:0}; sts.forEach(s=>cnt[s.code]++);
+  $('stbar').innerHTML=Object.keys(cnt).map(c=>`<div style="flex:${cnt[c]};background:${COL[c]}"></div>`).join('');
+  $('stleg').innerHTML=Object.keys(cnt).map(c=>`<span><i style="background:${COL[c]}"></i>${STXT[c]}: <b style="color:var(--tx)">${cnt[c]}</b></span>`).join('');
+  const ex=OS.filter(o=>o.st==='exe'); $('exe').innerHTML=ex.length?ex.map(osItem).join(''):'<div class="empty">Nenhuma OS em execução neste momento.</div>';
+  const d0=new Date(sim);d0.setHours(0,0,0,0);const t0=d0.getTime();
+  const hj=OS.filter(o=>o.sch>=t0&&o.sch<t0+DAY&&o.st!=='con'&&o.st!=='exe').sort((a,b)=>a.sch-b.sch);
+  $('hoje').innerHTML=hj.length?hj.map(osItem).join(''):'<div class="empty">Nenhuma OS pendente para hoje.</div>';
+}
+function oslist(){
+  const box=$('oslist');
+  if(of==='ev'){box.innerHTML=`<div class="ev">${EV.slice(0,120).map(e=>`<div><span class="tm">${fmtS(e.t)}</span><span style="color:${e.kind==='atr'?'var(--atr)':e.kind==='gen'?'var(--yel)':'var(--tx)'}">${e.txt}</span></div>`).join('')}</div>`;return;}
+  const k=curK(),d0=new Date(sim);d0.setHours(0,0,0,0);const t0=d0.getTime();
+  let r=OS.filter(o=>o.k===k||o.st==='atr');
+  if(of==='hoje') r=r.filter(o=>o.sch>=t0&&o.sch<t0+DAY);
+  if(of==='M'||of==='L') r=r.filter(o=>o.t.plan===of);
+  if(of==='exe') r=r.filter(o=>o.st==='exe');
+  if(of==='atr') r=r.filter(o=>o.st==='atr');
+  r.sort((a,b)=>a.sch-b.sch);
+  box.innerHTML=r.length?r.map(osItem).join(''):'<div class="empty">Nenhuma OS neste filtro.</div>';
+}
+function alarms(){
+  const a=OS.filter(o=>o.st==='atr').sort((x,y)=>x.dl-y.dl);
+  $('bdg').style.display=a.length?'':'none';$('bdg').textContent=a.length;
+  $('alarms').innerHTML=a.length?a.map(o=>`<div class="item" data-tag="${o.t.tag}"><span class="tg" style="color:var(--atr)">● ${o.t.tag}</span><div class="tx">${o.t.ativ}<div class="mt">${o.id} · venceu ${fmtS(o.dl)} · ${o.t.plan==='L'?'Lubrificação':'Manutenção'} · ${o.t.ck}</div></div></div>`).join(''):'<div class="empty">Sem alarmes. Todas as OS vencidas foram executadas.</div>';
+}
+function clock(){const d=new Date(sim);$('clk').textContent=new Date(sim).toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'});$('wk').textContent=`${['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'][d.getDay()]} · sem ${planWeek(curK())}/52`;}
+function setZoom(z){zoom=Math.max(.3,Math.min(2,z));const s=$('syn');if(s){s.style.width=(1400*zoom)+'px';s.style.height=(660*zoom)+'px';}}
+let lv=-1,lm=-1,ls,lview,lof;
+function render(force){
+  clock(); if(view==='sin') paintSVG();
+  const m=Math.floor(sim/(15*MIN));
+  if(force||ver!==lv||m!==lm||sel!==ls||view!==lview||of!==lof){
+    alarms(); if(view==='painel')painel(); if(view==='os')oslist(); sheet(); if(view==='sin')paintSVG();
+    lv=ver;lm=m;ls=sel;lview=view;lof=of;
+  }
+}
+function select(t){sel=t;render(true);}
+document.addEventListener('click',e=>{
+  const b=e.target.closest('[data-a]');if(b){const o=OS.find(x=>x.id===b.dataset.o);if(!o)return;
+    if(b.dataset.a==='ini'){o.st='exe';o.start=sim;o.end=sim+o.dur*HOUR;ev(sim,`${o.id} iniciada pelo app – ${o.t.tag}`,'ini');}
+    else{o.st='con';o.fin=sim;ev(sim,`${o.id} concluída pelo app – ${o.t.tag} · checklist ${o.t.ck}`,'con');}
+    ver++;render(true);return;}
+  const it=e.target.closest('.item[data-tag]');if(it){select(it.dataset.tag);}
+});
+$('bk').onclick=()=>select(null);
+document.querySelectorAll('nav.bn button').forEach(b=>b.onclick=()=>{view=b.dataset.v;document.querySelectorAll('nav.bn button').forEach(x=>x.classList.toggle('on',x===b));document.querySelectorAll('.view').forEach(v=>v.classList.toggle('on',v.id==='v-'+view));scrollTo(0,0);render(true);});
+document.querySelectorAll('[data-f]').forEach(b=>b.onclick=()=>{of=b.dataset.f;document.querySelectorAll('[data-f]').forEach(x=>x.classList.toggle('on',x===b));render(true);});
+$('play').onclick=()=>{running=!running;$('play').textContent=running?'❚❚':'▶';document.body.classList.toggle('paused',!running);};
+const SPD=[[60,'1 min/s'],[3600,'1 h/s'],[21600,'6 h/s']];let si=1;
+$('spd').onclick=()=>{si=(si+1)%SPD.length;speed=SPD[si][0];$('spd').textContent=SPD[si][1];};
+$('zi').onclick=()=>setZoom(zoom*1.25);$('zo').onclick=()=>setZoom(zoom/1.25);$('zf').onclick=()=>setZoom(($('synbox').clientWidth-2)/1400);
+
+buildSVG(); setZoom(zoom);
+if('serviceWorker' in navigator && location.protocol.startsWith('http')){navigator.serviceWorker.register('sw.js').catch(()=>{});}
+let deferredPrompt=null;
+addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredPrompt=e;$('instb').style.display='';});
+$('instbtn').onclick=async()=>{if(!deferredPrompt)return;deferredPrompt.prompt();await deferredPrompt.userChoice;deferredPrompt=null;$('instb').style.display='none';};
+if(matchMedia('(display-mode: standalone)').matches||navigator.standalone){$('instx').textContent='App instalado neste celular.';}
+(function init(){const now=Date.now(),k=wkIdx(now);sim=wkStart(k-1);lastK=k-2;step(sim);advance(now);})();
+render(true);
+let lastT=performance.now();
+setInterval(()=>{const t=performance.now(),dt=t-lastT;lastT=t;if(running)advance(sim+dt*speed);render(false);},300);
+</script>
+</body>
+</html>
